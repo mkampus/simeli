@@ -1,10 +1,11 @@
+// src/components/calculator/PriceCalculator.jsx
 import React, { useState, useEffect, useContext } from 'react';
 import {
     Box, Grid, Paper, Typography, TextField,
     MenuItem, FormControl, InputLabel, Select,
     Button, Stack, Alert, Tabs, Tab,
     Table, TableBody, TableCell, TableContainer,
-    TableHead, TableRow, Fade
+    TableHead, TableRow
 } from '@mui/material';
 import CalculateIcon from '@mui/icons-material/Calculate';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -21,7 +22,6 @@ const PriceCalculator = () => {
 
     const lengthOptions = getAvailableLengths();
 
-    // BUG FIX #1: No default length
     const [selectedLength, setSelectedLength] = useState(null);
     const [width, setWidth] = useState('');
     const [height, setHeight] = useState('');
@@ -31,7 +31,6 @@ const PriceCalculator = () => {
     const [calculation, setCalculation] = useState(null);
     const [showSuccess, setShowSuccess] = useState(false);
 
-    // Update widths when length changes
     useEffect(() => {
         if (selectedLength) {
             const widths = getAvailableWidths(selectedLength);
@@ -42,7 +41,6 @@ const PriceCalculator = () => {
         }
     }, [selectedLength]);
 
-    // Update heights when width changes
     useEffect(() => {
         if (selectedLength && width) {
             const heights = getAvailableHeights(selectedLength, width);
@@ -52,7 +50,6 @@ const PriceCalculator = () => {
         }
     }, [selectedLength, width]);
 
-    // Calculate detailed price breakdown
     useEffect(() => {
         if (selectedLength && width && height && quantity > 0) {
             const product = findProduct(selectedLength, width, height);
@@ -70,24 +67,10 @@ const PriceCalculator = () => {
         }
     }, [selectedLength, width, height, quantity]);
 
-    // BUG FIX #2 & #3: Reset calculator after adding product
     const handleAdd = () => {
         if (calculation) {
             addToQuote(calculation, quantity);
             setShowSuccess(true);
-
-            // Reset form after 1.5 seconds
-            setTimeout(() => {
-                setShowSuccess(false);
-                // RESET ALL FORM STATE
-                setSelectedLength(null);
-                setWidth('');
-                setHeight('');
-                setQuantity(1);
-                setAvailableWidths([]);
-                setAvailableHeights([]);
-                setCalculation(null);
-            }, 1500);
         }
     };
 
@@ -109,124 +92,134 @@ const PriceCalculator = () => {
                 ))}
             </Tabs>
 
-            {/* BUG FIX #1: Only show form when length is selected */}
             {selectedLength ? (
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <Paper sx={{ p: 3 }}>
-                            <Grid container spacing={2}>
-                                {/* Laius (Width) */}
-                                <Grid item xs={12} sm={4}>
-                                    <FormControl fullWidth>
-                                        <InputLabel>Laius (mm)</InputLabel>
-                                        <Select
-                                            value={width}
-                                            label="Laius (mm)"
-                                            onChange={(e) => setWidth(e.target.value)}
-                                        >
-                                            {availableWidths.map(w => (
-                                                <MenuItem key={w} value={w}>{w} mm</MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
+                        {showSuccess ? (
+                            <Paper sx={{ p: 3, bgcolor: '#c8e6c9', border: '2px solid #4caf50', minHeight: '250px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+                                <CheckCircleOutlineIcon sx={{ fontSize: 80, color: 'success.main', mb: 2 }} />
+                                <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 2 }}>
+                                    ✓ Toode lisatud!
+                                </Typography>
+                                <Typography variant="body1" sx={{ mb: 3, color: 'text.secondary' }}>
+                                    Toode on teie hinnapäringule lisatud. Saate jätkata teiste toodete lisamisega.
+                                </Typography>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={() => {
+                                        setShowSuccess(false);
+                                        setAvailableWidths(getAvailableWidths(selectedLength));
+                                        setWidth('');
+                                        setHeight('');
+                                        setQuantity(1);
+                                        setAvailableHeights([]);
+                                        setCalculation(null);
+                                    }}
+                                >
+                                    Lisa veel tooteid
+                                </Button>
+                            </Paper>
+                        ) : (
+                            <Paper sx={{ p: 3 }}>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} sm={4}>
+                                        <FormControl fullWidth>
+                                            <InputLabel>Laius (mm)</InputLabel>
+                                            <Select
+                                                value={width}
+                                                label="Laius (mm)"
+                                                onChange={(e) => setWidth(e.target.value)}
+                                            >
+                                                {availableWidths.map(w => (
+                                                    <MenuItem key={w} value={w}>{w} mm</MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
+
+                                    <Grid item xs={12} sm={4}>
+                                        <FormControl fullWidth disabled={!width}>
+                                            <InputLabel>Paksus (mm)</InputLabel>
+                                            <Select
+                                                value={height}
+                                                label="Paksus (mm)"
+                                                onChange={(e) => setHeight(e.target.value)}
+                                            >
+                                                {availableHeights.map(h => (
+                                                    <MenuItem key={h} value={h}>{h} mm</MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
+
+                                    <Grid item xs={12} sm={4}>
+                                        <TextField
+                                            fullWidth
+                                            label="Kogus (tk)"
+                                            type="number"
+                                            value={quantity}
+                                            onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                                        />
+                                    </Grid>
                                 </Grid>
 
-                                {/* Paksus (Height) */}
-                                <Grid item xs={12} sm={4}>
-                                    <FormControl fullWidth disabled={!width}>
-                                        <InputLabel>Paksus (mm)</InputLabel>
-                                        <Select
-                                            value={height}
-                                            label="Paksus (mm)"
-                                            onChange={(e) => setHeight(e.target.value)}
-                                        >
-                                            {availableHeights.map(h => (
-                                                <MenuItem key={h} value={h}>{h} mm</MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
-                                </Grid>
+                                {calculation && (
+                                    <Box sx={{ mt: 4 }}>
+                                        <TableContainer component={Paper} variant="outlined">
+                                            <Table size="small">
+                                                <TableHead sx={{ bgcolor: 'grey.50' }}>
+                                                    <TableRow>
+                                                        <TableCell>Kirjeldus</TableCell>
+                                                        <TableCell align="right">Ühikuhind</TableCell>
+                                                        <TableCell align="right">Summa</TableCell>
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    <TableRow>
+                                                        <TableCell>
+                                                            {calculation.lengthLabel}, {width}×{height}mm
+                                                        </TableCell>
+                                                        <TableCell align="right">
+                                                            {calculation.piecePrice.toFixed(2)}€
+                                                        </TableCell>
+                                                        <TableCell align="right">
+                                                            {calculation.totalGross}€
+                                                        </TableCell>
+                                                    </TableRow>
+                                                    <TableRow>
+                                                        <TableCell colSpan={2} sx={{ fontWeight: 'bold' }}>
+                                                            Kokku (sh KM 24%)
+                                                        </TableCell>
+                                                        <TableCell
+                                                            align="right"
+                                                            sx={{ fontWeight: 'bold', color: 'primary.main', fontSize: '1.1rem' }}
+                                                        >
+                                                            {calculation.totalGross}€
+                                                        </TableCell>
+                                                    </TableRow>
+                                                </TableBody>
+                                            </Table>
+                                        </TableContainer>
 
-                                {/* Kogus (Quantity) */}
-                                <Grid item xs={12} sm={4}>
-                                    <TextField
-                                        fullWidth
-                                        label="Kogus (tk)"
-                                        type="number"
-                                        value={quantity}
-                                        onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                                    />
-                                </Grid>
-                            </Grid>
+                                        <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+                                            Hind meetri kohta: {calculation.pricePerM}€/m | KM osa: {calculation.vatAmount}€
+                                        </Typography>
 
-                            {/* Price calculation table */}
-                            {calculation && (
-                                <Box sx={{ mt: 4 }}>
-                                    <TableContainer component={Paper} variant="outlined">
-                                        <Table size="small">
-                                            <TableHead sx={{ bgcolor: 'grey.50' }}>
-                                                <TableRow>
-                                                    <TableCell>Kirjeldus</TableCell>
-                                                    <TableCell align="right">Ühikuhind</TableCell>
-                                                    <TableCell align="right">Summa</TableCell>
-                                                </TableRow>
-                                            </TableHead>
-                                            <TableBody>
-                                                <TableRow>
-                                                    <TableCell>
-                                                        {calculation.lengthLabel}, {width}x{height}mm
-                                                    </TableCell>
-                                                    <TableCell align="right">
-                                                        {calculation.piecePrice.toFixed(2)}€
-                                                    </TableCell>
-                                                    <TableCell align="right">
-                                                        {calculation.totalGross}€
-                                                    </TableCell>
-                                                </TableRow>
-                                                <TableRow>
-                                                    <TableCell colSpan={2} sx={{ fontWeight: 'bold' }}>
-                                                        Kokku (sh KM 24%)
-                                                    </TableCell>
-                                                    <TableCell
-                                                        align="right"
-                                                        sx={{ fontWeight: 'bold', color: 'primary.main', fontSize: '1.1rem' }}
-                                                    >
-                                                        {calculation.totalGross}€
-                                                    </TableCell>
-                                                </TableRow>
-                                            </TableBody>
-                                        </Table>
-                                    </TableContainer>
-
-                                    <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-                                        Jooksev meeter: {calculation.pricePerM}€/m | KM osa: {calculation.vatAmount}€
-                                    </Typography>
-
-                                    <Box sx={{ mt: 3, position: 'relative' }}>
                                         <Button
                                             fullWidth
                                             variant="contained"
                                             size="large"
                                             startIcon={<CalculateIcon />}
                                             onClick={handleAdd}
-                                            disabled={showSuccess}
+                                            sx={{ mt: 3 }}
                                         >
-                                            Lisa päringusse
+                                            Lisa hinnapäringule
                                         </Button>
-
-                                        <Fade in={showSuccess}>
-                                            <Alert
-                                                icon={<CheckCircleOutlineIcon fontSize="inherit" />}
-                                                severity="success"
-                                                sx={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 1 }}
-                                            >
-                                                Toode edukalt lisatud!
-                                            </Alert>
-                                        </Fade>
                                     </Box>
-                                </Box>
-                            )}
-                        </Paper>
+                                )}
+                            </Paper>
+                        )}
                     </Grid>
 
                     <Grid item xs={12}>
@@ -240,7 +233,7 @@ const PriceCalculator = () => {
             ) : (
                 <Alert severity="info">
                     <Typography variant="body2">
-                        Alusta, valides materjali pikkuse ülal olevate valikute hulgast.
+                        Vali materjali pikkus ülal olevate valikute hulgast.
                     </Typography>
                 </Alert>
             )}

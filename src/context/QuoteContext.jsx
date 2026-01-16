@@ -6,8 +6,25 @@ export const QuoteProvider = ({ children }) => {
     const [quoteItems, setQuoteItems] = useState(() => {
         try {
             const localData = localStorage.getItem('simeli_quote_cart');
-            return localData ? JSON.parse(localData) : [];
+
+            // If no data exists, return empty array
+            if (!localData) return [];
+
+            // Parse the data
+            const parsed = JSON.parse(localData);
+
+            // Validate it's actually an array
+            if (!Array.isArray(parsed)) {
+                console.warn('Invalid quote cart data in localStorage, clearing it');
+                localStorage.removeItem('simeli_quote_cart');
+                return [];
+            }
+
+            return parsed;
         } catch (e) {
+            console.error('Failed to parse localStorage quote cart:', e);
+            // Clear corrupted data so it doesn't happen again
+            localStorage.removeItem('simeli_quote_cart');
             return [];
         }
     });

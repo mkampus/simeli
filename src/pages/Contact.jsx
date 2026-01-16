@@ -1,3 +1,4 @@
+// src/pages/Contact.jsx
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Container, Typography, Box, Grid, Paper, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
@@ -12,20 +13,19 @@ const Contact = () => {
     const [calculatorOpen, setCalculatorOpen] = useState(false);
     const [searchParams] = useSearchParams();
 
-// Use effect to check query params and open calculator if needed
     React.useEffect(() => {
         if (searchParams.get('calculator') === 'open') {
             setCalculatorOpen(true);
         }
     }, [searchParams]);
 
-    const mapEmbedSrc = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2059.123456789012!2d24.418745!3d58.892789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46ed314b6a054aed%3A0x4fd6514987c186bc!2sSimeli%20Saeveski%20O%C3%9C!5e0!3m2!1set!2see!4v1745334345379";
+    const mapEmbedSrc = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2121.5!2d24.428896!3d58.903918!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46ed31a5a5a5a5a5%3A0x0!2sUus%20tn%209%2C%2078304%20M%C3%A4rjamaa!5e0!3m2!1sen!2see!4v1234567890";
 
     return (
         <>
             <Helmet>
-                <title>Kontakt | Simeli Saeveski | Saematerjal Märjamaal</title>
-                <meta name="description" content="Võtke ühendust Simeli Saeveskiga Märjamaal päringute, tellimuste või konsultatsiooni saamiseks. Kasutage hinnakalkulaatorit ja saatke pakkumise taotlus otse." />
+                <title>Hinnapakkumise Taotlus | Simeli Saeveski | Kontakt & Kalkulaator</title>
+                <meta name="description" content="Küsi hinnapakkumist saematerjalile. Kasutage meie hinnakalkulaatorit või täitke vormi otse. Kiire vastus Märjamaalt, Simeli saevekist." />
             </Helmet>
 
             <Box sx={{ py: 6, backgroundColor: 'background.default' }}>
@@ -34,7 +34,7 @@ const Contact = () => {
                         Võta meiega ühendust
                     </Typography>
                     <Typography variant="h5" component="p" align="center" color="text.secondary" sx={{ mb: 6 }}>
-                        Ootame teie küsimusi ja päringuid!
+                        Küsi hinnapakkumist otse või kasuta kalkulaatorit!
                     </Typography>
 
                     <Grid container spacing={4}>
@@ -45,7 +45,7 @@ const Contact = () => {
                             </Typography>
                             <ContactInfo />
                             <Typography variant="body1" sx={{ mt: 3, mb: 2 }}>
-                                Asume mugavalt Märjamaal, Raplamaal – lihtne ligipääs nii kohalikele kui kaugemalt tulijatele.
+                                Asume Märjamaal, Raplamaal – ligipääs lihtne nii kohalikele klientidele kui kaugemalt tulejatele.
                             </Typography>
                             <Box sx={{ height: 300, width: '100%', borderRadius: 1, overflow: 'hidden', border: '1px solid', borderColor: 'divider' }}>
                                 <iframe
@@ -96,12 +96,14 @@ const Contact = () => {
                             </Accordion>
 
                             {/* QUOTE FORM - Always visible */}
-                            <Typography variant="h4" component="h2" gutterBottom sx={{ mb: 3 }}>
-                                Küsi hinnapakkumist
-                            </Typography>
-                            <Paper elevation={3} sx={{ p: { xs: 2, sm: 4 } }}>
-                                <QuoteForm />
-                            </Paper>
+                            <div id="quote-form-section">
+                                <Typography variant="h4" component="h2" gutterBottom sx={{ mb: 3 }}>
+                                    Tee hinnapäring
+                                </Typography>
+                                <Paper elevation={3} sx={{ p: { xs: 2, sm: 4 } }}>
+                                    <QuoteForm />
+                                </Paper>
+                            </div>
                         </Grid>
                     </Grid>
                 </Container>

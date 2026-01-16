@@ -1,6 +1,6 @@
 // src/components/layout/Footer.jsx
 import React from 'react';
-import { Box, Container, Typography, Link, Divider, Grid, Paper } from '@mui/material';
+import { Box, Container, Typography, Link, Divider, Grid } from '@mui/material';
 import VerifiedIcon from '@mui/icons-material/Verified';
 
 const Footer = () => {
@@ -22,7 +22,7 @@ const Footer = () => {
                             Simeli Saeveski OÜ
                         </Typography>
                         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                            Kohalik saeveski, mis tegeleb puidutöötlemisega ligi 30 aastat.
+                            Kohalik puidutöötlemise ettevõte ja saeveski Märjamaal.
                         </Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
                             <VerifiedIcon sx={{ fontSize: 18, color: 'success.main' }} />
@@ -35,7 +35,7 @@ const Footer = () => {
                     {/* Column 2: Registration Info */}
                     <Grid item xs={12} sm={6} md={3}>
                         <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 'bold' }}>
-                            Äriregistri Andmed
+                            Äriregistri andmed
                         </Typography>
                         <Typography variant="caption" display="block" sx={{ mb: 0.5 }}>
                             <strong>Registrikood:</strong> 16857352
@@ -93,13 +93,12 @@ const Footer = () => {
                             Asukoht
                         </Typography>
                         <Typography variant="caption" display="block" sx={{ mb: 1 }}>
-                            Orgita tee 11<br />
-                            Orgita küla<br />
-                            Märjamaa vald<br />
-                            78313 Rapla maakond
+                            Uus tn 9<br />
+                            Märjamaa<br />
+                            78304 Rapla maakond
                         </Typography>
                         <Link
-                            href="https://maps.google.com/maps?q=Orgita+tee+11,+Orgita,+78313"
+                            href="https://maps.google.com/maps?q=Uus+tn+9,+M%C3%A4rjamaa"
                             target="_blank"
                             rel="noopener noreferrer"
                             variant="caption"

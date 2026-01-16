@@ -1,4 +1,5 @@
-import React, { useContext, useState } from 'react';
+// src/components/quote/QuoteButton.jsx
+import React, { useContext } from 'react';
 import { Fab, Badge, Tooltip, useMediaQuery, useTheme } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { QuoteContext } from '../../context/QuoteContext';
@@ -17,7 +18,7 @@ const QuoteButton = ({ onClick }) => {
         <Tooltip title={`€${totalPrice.toFixed(2)}`}>
             <Fab
                 color="primary"
-                aria-label="hinnapakkumise nimekirjad"
+                aria-label="Ava hinnapäring"
                 onClick={onClick}
                 sx={{
                     position: 'fixed',

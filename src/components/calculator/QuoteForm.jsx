@@ -1,3 +1,4 @@
+// src/components/calculator/QuoteForm.jsx
 import React, { useState, useContext } from 'react';
 import {
     TextField, Button, Grid, Box, CircularProgress, Alert,
@@ -6,6 +7,15 @@ import {
 import SendIcon from '@mui/icons-material/Send';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { QuoteContext } from '../../context/QuoteContext';
+
+const validatePhoneNumber = (phone) => {
+    if (!phone) return true;
+
+    const cleaned = phone.replace(/[\s\-().+]/g, '');
+    const phoneRegex = /^(\+\d{1,3})?\d{7,15}$/;
+
+    return phoneRegex.test(cleaned);
+};
 
 const QuoteForm = () => {
     const { quoteItems, clearQuote, removeItem, calculateTotals } = useContext(QuoteContext);
@@ -18,7 +28,7 @@ const QuoteForm = () => {
         company: '',
         message: ''
     });
-    const [status, setStatus] = useState(null); // 'submitting', 'success', 'error'
+    const [status, setStatus] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleChange = (e) => {
@@ -40,6 +50,10 @@ const QuoteForm = () => {
             setErrorMessage('Palun sisestage korrektne e-posti aadress');
             return false;
         }
+        if (formData.phone && !validatePhoneNumber(formData.phone)) {
+            setErrorMessage('Palun sisestage korrektne telefoninumber (nt +372 58243476)');
+            return false;
+        }
         if (quoteItems.length === 0) {
             setErrorMessage('Palun lisage kalkulaatoriga vähemalt üks toode');
             return false;
@@ -58,51 +72,66 @@ const QuoteForm = () => {
 
         setStatus('submitting');
 
-        // Prepare payload
-        const payload = {
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
-            company: formData.company,
-            message: formData.message,
-            items: quoteItems.map(item => ({
-                product: `${item.width}x${item.height}mm - ${item.lengthLabel}`,
-                quantity: item.quantity,
-                unitPrice: item.piecePrice,
-                lineTotal: (item.piecePrice * item.quantity).toFixed(2)
-            })),
-            totalAmount: totalPrice.toFixed(2)
-        };
+        const itemsList = quoteItems
+            .map(item => `${item.width}×${item.height}mm (${item.lengthLabel}): ${item.quantity}tk @ €${item.piecePrice.toFixed(2)} = €${(item.piecePrice * item.quantity).toFixed(2)}`)
+            .join('\n');
+
+        const emailBody = `
+HINNAPÄRING
+
+👤 Klient: ${formData.name}
+📧 E-post: ${formData.email}
+📞 Telefon: ${formData.phone || '-'}
+🏢 Ettevõte: ${formData.company || '-'}
+
+📝 Lisainfo:
+${formData.message}
+
+📦 NÕUTUD MATERJALID:
+${itemsList}
+
+💰 ORIENTEERUV KOGUHIND: €${totalPrice.toFixed(2)}
+        `;
 
         try {
-            // TODO: Replace with your actual backend URL
-            const response = await fetch('/api/quotes/submit', {
+            const response = await fetch('https://api.web3forms.com/submit', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    access_key: 'ff9d9431-7a39-4265-9d1d-9b07bf7877ec',
+                    name: formData.name,
+                    email: formData.email,
+                    phone: formData.phone,
+                    company: formData.company,
+                    message: emailBody,
+                    redirect: false
+                })
             });
 
-            if (response.ok) {
+            const data = await response.json();
+
+            if (data.success) {
                 setStatus('success');
                 clearQuote();
                 setFormData({ name: '', email: '', phone: '', company: '', message: '' });
             } else {
                 setStatus('error');
-                setErrorMessage('Saatmine ebaõnnestus. Palun proovige hiljem uuesti.');
+                setErrorMessage(data.message || 'Saatmine ebaõnnestus');
             }
         } catch (err) {
             setStatus('error');
-            setErrorMessage('Ühenduse viga. Palun proovige hiljem uuesti.');
+            setErrorMessage('Ühenduse viga');
         }
     };
 
     return (
         <Box component="form" onSubmit={handleSubmit}>
-            {/* QUOTE SUMMARY */}
             {quoteItems.length > 0 && (
                 <>
                     <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>
-                        Teie päringu kokkuvõte:
+                        Teie hinnapäring:
                     </Typography>
                     <Paper variant="outlined" sx={{ p: 2, mb: 3, bgcolor: 'grey.50' }}>
                         <List disablePadding>
@@ -118,7 +147,7 @@ const QuoteForm = () => {
                                     }}
                                 >
                                     <ListItemText
-                                        primary={`${item.width}x${item.height}mm (${item.lengthLabel})`}
+                                        primary={`${item.width}×${item.height}mm (${item.lengthLabel})`}
                                         secondary={`${item.quantity}tk × ${item.piecePrice.toFixed(2)}€ = ${(item.piecePrice * item.quantity).toFixed(2)}€`}
                                     />
                                     <Button
@@ -140,7 +169,6 @@ const QuoteForm = () => {
                 </>
             )}
 
-            {/* CONTACT FORM */}
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                     <TextField
@@ -198,11 +226,10 @@ const QuoteForm = () => {
                     />
                 </Grid>
 
-                {/* STATUS MESSAGES */}
                 <Grid item xs={12}>
                     {status === 'success' && (
                         <Alert severity="success">
-                            ✓ Päring saadetud edukalt! Võtame teiega ühendust varsti.
+                            ✓ Hinnapäring saadetud! Vastame varsti.
                         </Alert>
                     )}
                     {status === 'error' && (
@@ -212,7 +239,6 @@ const QuoteForm = () => {
                     )}
                 </Grid>
 
-                {/* SUBMIT BUTTON */}
                 <Grid item xs={12}>
                     <Button
                         type="submit"
@@ -222,7 +248,7 @@ const QuoteForm = () => {
                         disabled={status === 'submitting' || quoteItems.length === 0}
                         startIcon={status === 'submitting' ? <CircularProgress size={20} /> : <SendIcon />}
                     >
-                        {status === 'submitting' ? 'Saadan...' : 'Saada pakkumise taotlus'}
+                        {status === 'submitting' ? 'Saadan...' : 'Saada hinnapäring'}
                     </Button>
                 </Grid>
             </Grid>

@@ -11,18 +11,18 @@ const FeatureSection = () => {
     const features = [
         {
             icon: <HistoryEduIcon fontSize="large" color="primary" />,
-            title: "Ligi 30a Kogemust",
-            description: "Pikaajaline kogemus puidutöötlemises tagab asjatundliku nõu."
+            title: "Ligi 30 aastat kogemust",
+            description: "Pikaajaline kogemus puidutöötlemises ja asjatundlik abi puidumaterjali valimises."
         },
         {
             icon: <ForestIcon fontSize="large" color="primary" />,
             title: "Kodumaine kvaliteet",
-            description: "Kasutame kohalikku toorainet ja tagame parima kvaliteedi."
+            description: "Kasutame kohalikku toorainet ja pakume parimat kvaliteeti."
         },
         {
             icon: <LocationOnIcon fontSize="large" color="primary" />,
-            title: "Mugav Asukoht",
-            description: "Asub Märjamaal – säästa aega ja kütust võrreldes linnasõiduga."
+            title: "Asume Märjamaal",
+            description: "Säästa aega ja kütust."
         },
         {
             icon: <HandymanIcon fontSize="large" color="primary" />,
@@ -32,7 +32,7 @@ const FeatureSection = () => {
         {
             icon: <LocalShippingIcon fontSize="large" color="primary" />,
             title: "Transport kokkuleppel",
-            description: "Toimetame materjalid mugavalt teie objektile."
+            description: "Toimetame materjalid otse objektile."
         }
     ];
 

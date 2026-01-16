@@ -1,6 +1,7 @@
 // src/pages/Home.jsx
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import Hero from '../components/home/Hero';
 import { Box, Typography, Container, Grid, Paper, List, ListItem, ListItemIcon, ListItemText, Link, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -29,7 +30,7 @@ const Home = () => {
             company: true
         },
         {
-            quote: "Paindlik teenus ja personaalne lähenemisviis. Saim käitumine on kiire ja asjatundlik.",
+            quote: "Paindlik teenus ja personaalne lähenemisviis. Tema käitumine on kiire ja asjatundlik.",
             author: "OÜ Kodutööd, Märjamaa",
             company: true
         },
@@ -45,12 +46,18 @@ const Home = () => {
         { q: "Millised on teie tarneajad?", a: "Märjamaa ja Raplamaa: 24 tundi\nTallinn ja lähiomavalitsused: 48 tundi\nMuud piirkonnad: 3-5 päeva kokkuleppel\nKiirem tarne võimalik olenevalt mahust." },
         { q: "Kas pakute ka transporti?", a: "Jah, pakume kokkuleppel transporditeenust Raplamaa piires ja vajadusel ka kaugemale. Transpordi hind sõltub kogusest ja sihtkohast." },
         { q: "Milliseid puiduliike te töötlete?", a: "Peamiselt töötleme kohalikke okaspuid nagu mänd ja kuusk, kuid vastavalt võimalustele ja kokkuleppele saame töödelda ka teisi liike." },
-        { q: "Mis on minimaalne tellimuse kogus?", a: "Oleme paindlikud ja teenindame ka väikekliente. Minimaalset kogust kui sellist ei ole, kuid väga väikeste koguste puhul võib rakenduda väiketellimuse tasu. Küsi julgelt pakkumist!" },
-        { q: "Kas materjal on kuiv?", a: "Pakume nii värskelt saetud kui ka õhukuiva materjali. Õhukuiv materjal on soodsam, kuid selle niiskusprotsent on kõrgem kui kuivatis kuivatatul. Anname nõu, milline materjal teie projekti jaoks parim on." },
+        { q: "Mis on minimaalne tellimuse kogus?", a: "Minimaalne tellimuse kogus ei ole. Väga väikeste koguste puhul võib rakenduda väiketellimuse tasu. Küsi julgelt hinnapakkumist!" },
+        { q: "Kas materjal on kuiv?", a: "Pakume nii värskelt saetud kui ka õhukuiva materjali. Õhukuiv materjal on odavam, kuid märgem kui kiln-kuivatatud puit. Anname nõu, milline materjal teie projekti jaoks parim on." },
     ];
 
     return (
         <>
+            <Helmet>
+                <title>Saematerjal Märjamaal & Kesk-Eestis | Terrassilauad, Voodrilauad | Simeli Saeveski</title>
+                <meta name="description" content="Kohalik saeveski Märjamaal. Terrassilauad, voodrilauad, sauna lavalauad. Kiire teenindus ja paindlikud kogused." />
+                <meta name="keywords" content="saematerjal, terrassilaud, voodrilaud, sauna lavalaud, Märjamaa, saeveski" />
+            </Helmet>
+
             <Hero />
 
             <Box id="meist" sx={{ py: 6, backgroundColor: 'background.paper' }}>
@@ -59,18 +66,36 @@ const Home = () => {
                         Meist
                     </Typography>
                     <Grid container spacing={4} justifyContent="center" alignItems="center">
-                        <Grid item xs={12} md={8}>
-                            <Paper elevation={0} sx={{ p: 3, backgroundColor: 'transparent', textAlign: 'center' }}>
-                                <Typography variant="h6" component="p" color="text.secondary" sx={{ mb: 2 }}>
+                        <Grid item xs={12} md={5}>
+                            <Box
+                                component="img"
+                                src="/images/siim-profile.jpg"
+                                alt="Siim Soosaar, Simeli Saeveski omanik"
+                                sx={{
+                                    width: '100%',
+                                    height: 'auto',
+                                    borderRadius: 2,
+                                    boxShadow: 2,
+                                    objectFit: 'cover',
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={7}>
+                            <Paper elevation={0} sx={{ p: 3, backgroundColor: 'transparent' }}>
+                                <Typography variant="h5" component="h3" gutterBottom sx={{ fontWeight: 'bold', mb: 2 }}>
+                                    Simeli Saeveski
+                                </Typography>
+                                <Typography variant="body1" sx={{ mb: 2 }}>
                                     <BusinessIcon sx={{ verticalAlign: 'middle', mr: 1, color: 'primary.main' }} />
-                                    Simeli Saeveski OÜ on Märjamaal tegutsev puidutöötlemisettevõte.
+                                    Simeli Saeveski OÜ on Märjamaal tegutsev puidutöötlemisettevõte ja saeveski.
                                 </Typography>
                                 <Typography variant="body1" sx={{ mb: 2 }}>
                                     <HistoryIcon sx={{ verticalAlign: 'middle', mr: 1, color: 'primary.main' }} />
-                                    Ettevõtte omanik Siim Soosaar omab pikaajalist kogemust puiduvaldkonnas, tagades asjatundliku teeninduse ja kvaliteetse materjali.
+                                    Omame pikaajalist kogemust puiduvaldkonnas ja tagame asjatundliku teeninduse ning kvaliteetse materjali.
                                 </Typography>
                                 <Typography variant="body1" sx={{ mb: 2 }}>
-                                    Keskendume eelkõige kohalikele väikeklientidele, pakkudes paindlikke lahendusi ja konkurentsivõimelist hinda. Erinevalt suuretest saeveskidest, mis nõuavad minimaalseid tellimusi, saame töötada ka väiksemate kogustega.
+                                    <LocalShippingIcon sx={{ verticalAlign: 'middle', mr: 1, color: 'primary.main' }} />
+                                    Keskendume eelkõige väikeklientidele ja pakume paindlikke lahendusi ning konkurentsivõimelist hinda. Erinevalt suuretest saeveskidest, mis nõuavad suuri tellimusi, töötame ka väiksemate kogustega.
                                 </Typography>
                                 <Typography variant="body2" sx={{ fontStyle: 'italic', color: 'text.secondary', mb: 3 }}>
                                     Registrikood: <strong>16857352</strong> | KM-kood: <strong>EE102676633</strong>
@@ -90,7 +115,7 @@ const Home = () => {
                         ⚡ Kiired Tarneajad
                     </Typography>
                     <Typography variant="h5" component="p" align="center" color="inherit" sx={{ mb: 4, opacity: 0.95 }}>
-                        Kiirem teenus kui suurte saeveskide puhul
+                        Suurtest kiirem!
                     </Typography>
 
                     <Grid container spacing={3} justifyContent="center">
@@ -103,7 +128,7 @@ const Home = () => {
                                     24 tundi
                                 </Typography>
                                 <Typography variant="body2" sx={{ mt: 1 }}>
-                                    Kohalik teenindus - sama päeva tellimus kätte järgmisel päeval
+                                    Tellitud sama päeval – kohale järgmisel päeval
                                 </Typography>
                             </Paper>
                         </Grid>
@@ -117,7 +142,7 @@ const Home = () => {
                                     48 tundi
                                 </Typography>
                                 <Typography variant="body2" sx={{ mt: 1 }}>
-                                    Kiire transport - päris-aegne teenindus
+                                    Kiire tarne – kohale 2 päeva jooksul
                                 </Typography>
                             </Paper>
                         </Grid>
@@ -131,7 +156,7 @@ const Home = () => {
                                     3-5 päeva
                                 </Typography>
                                 <Typography variant="body2" sx={{ mt: 1 }}>
-                                    Kokkuleppel - lepime tähtajad paika individuaalselt
+                                    Kokkuleppel – paneme tähtajad paika
                                 </Typography>
                             </Paper>
                         </Grid>
@@ -139,7 +164,7 @@ const Home = () => {
 
                     <Box sx={{ textAlign: 'center', mt: 4 }}>
                         <Typography variant="body1">
-                            Kiirema tarneaja kohta küsi julgelt! <strong>Paljud tellimused käivad välja veelgi kiiremini.</strong>
+                            Kiirema tarneaja kohta küsi julgelt! <strong>Paljud tellimused võivad valmis saada veelgi kiiremini.</strong>
                         </Typography>
                     </Box>
                 </Container>
@@ -240,7 +265,7 @@ const Home = () => {
                         Võta meiega ühendust ja leiame parima lahenduse sinu puiduvajadustele!
                     </Typography>
                     <Button to="/kontakt" variant="contained" color="secondary" size="large">
-                        Küsi personaalset pakkumist
+                        Küsi personaalset hinnapakkumist
                     </Button>
                 </Container>
             </Box>

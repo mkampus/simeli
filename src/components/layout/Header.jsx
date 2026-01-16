@@ -38,12 +38,7 @@ const Header = () => {
                 </ListItem>
                 <ListItem disablePadding>
                     <ListItemButton component={RouterLink} to="/kontakt" onClick={handleDrawerToggle}>
-                        <ListItemText primary="Hinnakalkulaator" />
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton component={RouterLink} to="/kontakt" onClick={handleDrawerToggle}>
-                        <ListItemText primary="Kontakt" />
+                        <ListItemText primary="Kontakt & Kalkulaator" />
                     </ListItemButton>
                 </ListItem>
                 <Divider sx={{ my: 1 }} />

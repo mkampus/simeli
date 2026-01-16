@@ -1,3 +1,4 @@
+// src/components/quote/QuoteRequestDrawer.jsx
 import React, { useContext } from 'react';
 import {
     Drawer, Box, Typography, List, ListItem, ListItemText,
@@ -21,14 +22,9 @@ const QuoteRequestDrawer = ({ open, onClose, onSubmit }) => {
             open={open}
             onClose={onClose}
             variant="temporary"
-            ModalProps={{
-                hideBackdrop: true,
-                sx: { pointerEvents: 'none' }
-            }}
             PaperProps={{
                 sx: {
                     width: isMobile ? '100%' : 400,
-                    pointerEvents: 'auto',
                     boxShadow: theme.shadows[10],
                     display: 'flex',
                     flexDirection: 'column'
@@ -45,7 +41,7 @@ const QuoteRequestDrawer = ({ open, onClose, onSubmit }) => {
             <List sx={{ flexGrow: 1, overflowY: 'auto', p: 0 }}>
                 {quoteItems.length === 0 ? (
                     <Box sx={{ p: 4, textAlign: 'center' }}>
-                        <Typography color="text.secondary">Nimekiri on tühi</Typography>
+                        <Typography color="text.secondary">Päring on tühi</Typography>
                     </Box>
                 ) : (
                     quoteItems.map((item) => (
@@ -55,7 +51,7 @@ const QuoteRequestDrawer = ({ open, onClose, onSubmit }) => {
                         >
                             <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', mb: 1 }}>
                                 <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-                                    {item.width}x{item.height}mm - {item.lengthLabel}
+                                    {item.width}×{item.height}mm – {item.lengthLabel}
                                 </Typography>
                                 <IconButton size="small" color="error" onClick={() => removeItem(item.width, item.height, item.length)}>
                                     <DeleteOutlineIcon fontSize="small" />
@@ -94,7 +90,7 @@ const QuoteRequestDrawer = ({ open, onClose, onSubmit }) => {
                     onClick={onSubmit}
                     disabled={quoteItems.length === 0}
                 >
-                    Vormista päring
+                    Saada päring
                 </Button>
             </Box>
         </Drawer>

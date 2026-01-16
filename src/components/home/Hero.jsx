@@ -10,7 +10,7 @@ const Hero = () => {
                 py: { xs: 8, md: 12 },
                 textAlign: 'center',
                 color: 'white',
-                backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/images/saeveski-hero-bg.webp)',
+                backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(public/images/saeveski-hero-bg.webp)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 display: 'flex',
@@ -30,7 +30,7 @@ const Hero = () => {
                         fontSize: { xs: '2.5rem', sm: '3rem', md: '3.5rem' }
                     }}
                 >
-                    Kvaliteetne saematerjal Märjamaal
+                    Saematerjal Märjamaal ja Kesk-Eestis
                 </Typography>
                 <Typography
                     variant="h5"
@@ -42,7 +42,7 @@ const Hero = () => {
                         fontSize: { xs: '1rem', sm: '1.1rem', md: '1.25rem' }
                     }}
                 >
-                    Ligi 30 aastat kogemust. Kohalik tootja, kiire tarne, paindlikud lahendused.
+                    Terrassilauad, voodrilauad, sauna lavalauad. Kiire hinnapakkumine, paindlikud kogused.
                 </Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, flexWrap: 'wrap' }}>
                     <Button
@@ -54,7 +54,7 @@ const Hero = () => {
                         Hinnakalkulaator
                     </Button>
                     <Button to="/kontakt" color="secondary" variant="contained" size="large">
-                        Küsi pakkumist
+                        Küsi hinnapakkumist
                     </Button>
                 </Box>
             </Container>
