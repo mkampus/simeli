@@ -1,27 +1,16 @@
 // src/components/home/Hero.jsx
-import React, { useContext } from 'react';
-import { LanguageContext } from '../../context/LanguageContext';
-import Button from '../common/Button'; // Our custom button
+import React from 'react';
+import Button from '../common/Button';
 import { Container, Typography, Box } from '@mui/material';
 
 const Hero = () => {
-    const { translations } = useContext(LanguageContext);
-    // Veendu, et t.browseServices või sarnane tõlge on olemas LanguageContextis
-    const t = translations.home.hero || {
-        title: "Kvaliteetne saematerjal igaks projektiks",
-        subtitle: "Kohalik tootja teie ehitusvajadusteks.",
-        // browseProducts: "Vaata tooteid", // Vana
-        browseServices: "Tutvu teenustega", // Uus variant
-        requestQuote: "Küsi pakkumist",
-    };
-
     return (
         <Box
             sx={{
                 py: { xs: 8, md: 12 },
                 textAlign: 'center',
                 color: 'white',
-                backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/images/hero-lumber.jpg)',
+                backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/images/saeveski-hero-bg.webp)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 display: 'flex',
@@ -41,7 +30,7 @@ const Hero = () => {
                         fontSize: { xs: '2.5rem', sm: '3rem', md: '3.5rem' }
                     }}
                 >
-                    {t.title}
+                    Kvaliteetne saematerjal Märjamaal
                 </Typography>
                 <Typography
                     variant="h5"
@@ -53,23 +42,19 @@ const Hero = () => {
                         fontSize: { xs: '1rem', sm: '1.1rem', md: '1.25rem' }
                     }}
                 >
-                    {t.subtitle}
+                    Ligi 30 aastat kogemust. Kohalik tootja, kiire tarne, paindlikud lahendused.
                 </Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, flexWrap: 'wrap' }}>
-                    {/* MUUDETUD NUPP: Viitab nüüd kontaktile või teenuste sektsioonile/lehele */}
                     <Button
-                        // href="/#teenused" // Variant 1: Link lehe sisesele sektsioonile
-                        // to="/teenused" // Variant 2: Link eraldi teenuste lehele
-                        to="/kontakt" // Variant 3: Lihtsalt teine nupp kontaktile
+                        to="/kontakt?calculator=open"
                         color="primary"
                         size="large"
                         variant="contained"
                     >
-                        {/* {t.browseServices} */}
-                        Meie võimalused {/* Variant 3 tekst */}
+                        Hinnakalkulaator
                     </Button>
                     <Button to="/kontakt" color="secondary" variant="contained" size="large">
-                        {t.requestQuote}
+                        Küsi pakkumist
                     </Button>
                 </Box>
             </Container>

@@ -1,53 +1,38 @@
-import React, { useContext } from 'react';
+// src/components/home/FeatureSection.jsx
+import React from 'react';
 import { Box, Container, Typography, Grid } from '@mui/material';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import ForestIcon from '@mui/icons-material/Forest';
 import HandymanIcon from '@mui/icons-material/Handyman';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
-import { LanguageContext } from '../../context/LanguageContext';
 
 const FeatureSection = () => {
-    const { translations } = useContext(LanguageContext);
-    const t = translations.home || {
-        featureSectionTitle: "Miks valida Simeli Saeveski?",
-        feature1Title: "Kodumaine kvaliteet",
-        feature1Desc: "Kasutame kohalikku toorainet ja tagame parima kvaliteedi.",
-        feature2Title: "Paindlikud lahendused",
-        feature2Desc: "Täidame eritellimusi vastavalt teie joonistele ja mõõtudele.",
-        feature3Title: "Transport kokkuleppel",
-        feature3Desc: "Toimetame materjalid mugavalt teie objektile.",
-        feature4Title: "Ligi 30a Kogemust",
-        feature4Desc: "Pikaajaline kogemus puidutöötlemises tagab asjatundliku nõu.",
-        feature5Title: "Mugav Asukoht",
-        feature5Desc: "Asub Märjamaal – säästa aega ja kütust võrreldes linnasõiduga.",
-    };
-
     const features = [
         {
             icon: <HistoryEduIcon fontSize="large" color="primary" />,
-            title: t.feature4Title,
-            description: t.feature4Desc
+            title: "Ligi 30a Kogemust",
+            description: "Pikaajaline kogemus puidutöötlemises tagab asjatundliku nõu."
         },
         {
             icon: <ForestIcon fontSize="large" color="primary" />,
-            title: t.feature1Title,
-            description: t.feature1Desc
+            title: "Kodumaine kvaliteet",
+            description: "Kasutame kohalikku toorainet ja tagame parima kvaliteedi."
         },
         {
             icon: <LocationOnIcon fontSize="large" color="primary" />,
-            title: t.feature5Title,
-            description: t.feature5Desc
+            title: "Mugav Asukoht",
+            description: "Asub Märjamaal – säästa aega ja kütust võrreldes linnasõiduga."
         },
         {
             icon: <HandymanIcon fontSize="large" color="primary" />,
-            title: t.feature2Title,
-            description: t.feature2Desc
+            title: "Paindlikud lahendused",
+            description: "Täidame eritellimusi vastavalt teie joonistele ja mõõtudele."
         },
         {
             icon: <LocalShippingIcon fontSize="large" color="primary" />,
-            title: t.feature3Title,
-            description: t.feature3Desc
+            title: "Transport kokkuleppel",
+            description: "Toimetame materjalid mugavalt teie objektile."
         }
     ];
 
@@ -61,7 +46,7 @@ const FeatureSection = () => {
                     gutterBottom
                     sx={{ mb: 6 }}
                 >
-                    {t.featureSectionTitle}
+                    Miks valida Simeli Saeveski?
                 </Typography>
 
                 <Grid container spacing={5} justifyContent="center">

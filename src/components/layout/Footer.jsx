@@ -1,133 +1,172 @@
-import React, { useState, useContext } from 'react';
-import {
-    AppBar, Toolbar, Typography, Box, IconButton,
-    Drawer, List, ListItem, ListItemButton, ListItemText, Divider, ListItemIcon
-} from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
-import MenuIcon from '@mui/icons-material/Menu';
-import CloseIcon from '@mui/icons-material/Close';
-import PhoneIcon from '@mui/icons-material/Phone';
-import Button from '../common/Button';
-import { LanguageContext } from '../../context/LanguageContext';
+// src/components/layout/Footer.jsx
+import React from 'react';
+import { Box, Container, Typography, Link, Divider, Grid, Paper } from '@mui/material';
+import VerifiedIcon from '@mui/icons-material/Verified';
 
-const Header = () => {
-    const [mobileOpen, setMobileOpen] = useState(false);
-    const { translations } = useContext(LanguageContext);
-    const t = translations.navigation || { home: "Avaleht", contact: "Kontakt", callNow: "Helista" };
-
-    const handleDrawerToggle = () => {
-        setMobileOpen(!mobileOpen);
-    };
-
-    const navItems = [
-        { label: t.home, path: '/' },
-        { label: t.contact, path: '/kontakt', variant: 'contained', color: 'primary' }
-    ];
-
-    const drawer = (
-        <Box sx={{ width: 250 }} role="presentation">
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 1 }}>
-                <IconButton onClick={handleDrawerToggle}>
-                    <CloseIcon />
-                </IconButton>
-            </Box>
-            <List>
-                <ListItem disablePadding>
-                    <ListItemButton component={RouterLink} to="/" onClick={handleDrawerToggle}>
-                        <ListItemText primary={t.home} />
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton component={RouterLink} to="/kontakt" onClick={handleDrawerToggle}>
-                        <ListItemText primary={t.contact} />
-                    </ListItemButton>
-                </ListItem>
-                <Divider sx={{ my: 1 }} />
-                <ListItem disablePadding>
-                    <ListItemButton component="a" href="tel:+37258243476" onClick={handleDrawerToggle}>
-                        <ListItemIcon sx={{ minWidth: 32 }}>
-                            <PhoneIcon fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText primary={t.callNow} />
-                    </ListItemButton>
-                </ListItem>
-            </List>
-        </Box>
-    );
+const Footer = () => {
+    const currentYear = new Date().getFullYear();
 
     return (
-        <>
-            <AppBar position="sticky" color="background" sx={{ mb: 0, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                <Toolbar>
-                    <Typography
-                        variant="h6"
-                        component={RouterLink}
-                        to="/"
-                        sx={{ flexGrow: 1, textDecoration: 'none', color: 'primary.main', fontWeight: 'bold' }}
-                    >
-                        Simeli Saeveski
-                    </Typography>
+        <Box component="footer" sx={{
+            py: 4,
+            mt: 'auto',
+            bgcolor: 'background.paper',
+            borderTop: '1px solid',
+            borderColor: 'divider'
+        }}>
+            <Container maxWidth="lg">
+                <Grid container spacing={4} sx={{ mb: 4 }}>
+                    {/* Column 1: Company Info */}
+                    <Grid item xs={12} sm={6} md={3}>
+                        <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
+                            Simeli Saeveski OÜ
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                            Kohalik saeveski, mis tegeleb puidutöötlemisega ligi 30 aastat.
+                        </Typography>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                            <VerifiedIcon sx={{ fontSize: 18, color: 'success.main' }} />
+                            <Typography variant="caption">
+                                Registreeritud äriregistris
+                            </Typography>
+                        </Box>
+                    </Grid>
 
-                    <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, alignItems: 'center' }}>
-                        {navItems.map((item) => (
-                            <Button
-                                key={item.label}
-                                component={RouterLink}
-                                to={item.path}
-                                color={item.color || "inherit"}
-                                variant={item.variant || "text"}
-                                sx={item.variant === 'contained' ? { ml: 1 } : {}}
+                    {/* Column 2: Registration Info */}
+                    <Grid item xs={12} sm={6} md={3}>
+                        <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 'bold' }}>
+                            Äriregistri Andmed
+                        </Typography>
+                        <Typography variant="caption" display="block" sx={{ mb: 0.5 }}>
+                            <strong>Registrikood:</strong> 16857352
+                        </Typography>
+                        <Typography variant="caption" display="block" sx={{ mb: 0.5 }}>
+                            <strong>KM-kood:</strong> EE102676633
+                        </Typography>
+                        <Typography variant="caption" display="block" sx={{ color: 'success.main' }}>
+                            <strong>Registreeritud:</strong> 09.11.2023
+                        </Typography>
+                    </Grid>
+
+                    {/* Column 3: Contact */}
+                    <Grid item xs={12} sm={6} md={3}>
+                        <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 'bold' }}>
+                            Kontakt
+                        </Typography>
+                        <Typography variant="body2" sx={{ mb: 1 }}>
+                            <Link
+                                component="a"
+                                href="tel:+37258243476"
+                                color="inherit"
+                                underline="hover"
                             >
-                                {item.label}
-                            </Button>
-                        ))}
-                        <Button
-                            href="tel:+37258243476"
-                            color="primary"
-                            variant="outlined"
-                            startIcon={<PhoneIcon />}
-                            sx={{ ml: 2 }}
-                        >
-                            {t.callNow}
-                        </Button>
-                    </Box>
+                                +372 58243476
+                            </Link>
+                        </Typography>
+                        <Typography variant="body2" sx={{ mb: 1 }}>
+                            <Link
+                                component="a"
+                                href="mailto:simelisaeveski@gmail.com"
+                                color="inherit"
+                                underline="hover"
+                            >
+                                simelisaeveski@gmail.com
+                            </Link>
+                        </Typography>
+                        <Typography variant="body2">
+                            <Link
+                                component="a"
+                                href="https://wa.me/37258243476"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                color="inherit"
+                                underline="hover"
+                            >
+                                💬 WhatsApp
+                            </Link>
+                        </Typography>
+                    </Grid>
 
-                    <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-                        <IconButton
-                            href="tel:+37258243476"
+                    {/* Column 4: Address */}
+                    <Grid item xs={12} sm={6} md={3}>
+                        <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 'bold' }}>
+                            Asukoht
+                        </Typography>
+                        <Typography variant="caption" display="block" sx={{ mb: 1 }}>
+                            Orgita tee 11<br />
+                            Orgita küla<br />
+                            Märjamaa vald<br />
+                            78313 Rapla maakond
+                        </Typography>
+                        <Link
+                            href="https://maps.google.com/maps?q=Orgita+tee+11,+Orgita,+78313"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            variant="caption"
                             color="primary"
-                            aria-label="call now"
-                            sx={{ mr: 1 }}
+                            underline="hover"
                         >
-                            <PhoneIcon />
-                        </IconButton>
-                        <IconButton
-                            edge="end"
-                            color="primary"
-                            aria-label="menu"
-                            onClick={handleDrawerToggle}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                    </Box>
-                </Toolbar>
-            </AppBar>
+                            Vaata kaardil →
+                        </Link>
+                    </Grid>
+                </Grid>
 
-            <Drawer
-                anchor="right"
-                variant="temporary"
-                open={mobileOpen}
-                onClose={handleDrawerToggle}
-                ModalProps={{ keepMounted: true }}
-                sx={{
-                    display: { xs: 'block', md: 'none' },
-                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 250 },
-                }}
-            >
-                {drawer}
-            </Drawer>
-        </>
+                <Divider sx={{ my: 3 }} />
+
+                {/* Bottom Links */}
+                <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    gap: 2,
+                    flexWrap: 'wrap',
+                    mb: 3
+                }}>
+                    <Link
+                        href="#"
+                        color="text.secondary"
+                        underline="hover"
+                        sx={{ fontSize: '0.875rem' }}
+                    >
+                        Privaatsuspoliitika
+                    </Link>
+                    <Typography variant="body2" color="text.secondary">•</Typography>
+                    <Link
+                        href="#"
+                        color="text.secondary"
+                        underline="hover"
+                        sx={{ fontSize: '0.875rem' }}
+                    >
+                        Kasutustingimused
+                    </Link>
+                    <Typography variant="body2" color="text.secondary">•</Typography>
+                    <Link
+                        href="#"
+                        color="text.secondary"
+                        underline="hover"
+                        sx={{ fontSize: '0.875rem' }}
+                    >
+                        Tarnetingimused
+                    </Link>
+                </Box>
+
+                <Typography variant="body2" color="text.secondary" align="center">
+                    © {currentYear} Simeli Saeveski OÜ. Kõik õigused kaitstud.
+                </Typography>
+                <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    align="center"
+                    sx={{
+                        mt: 1,
+                        display: 'block',
+                        fontSize: '0.75rem'
+                    }}
+                >
+                    Registrikood: 16857352 | KM-kood: EE102676633
+                </Typography>
+            </Container>
+        </Box>
     );
 };
 
-export default Header;
+export default Footer;

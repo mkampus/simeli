@@ -1,28 +1,26 @@
-import React, { useState, useContext } from 'react';
+// src/components/layout/Header.jsx
+import React, { useState } from 'react';
 import {
     AppBar, Toolbar, Typography, Box, IconButton,
     Drawer, List, ListItem, ListItemButton, ListItemText, Divider,
-    ListItemIcon // <--- ADD THIS IMPORT
+    ListItemIcon
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import PhoneIcon from '@mui/icons-material/Phone';
 import Button from '../common/Button';
-import { LanguageContext } from '../../context/LanguageContext';
 
 const Header = () => {
     const [mobileOpen, setMobileOpen] = useState(false);
-    const { translations } = useContext(LanguageContext);
-    const t = translations.navigation || { home: "Avaleht", contact: "Kontakt", callNow: "Helista" };
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
 
     const navItems = [
-        { label: t.home, path: '/' },
-        { label: t.contact, path: '/kontakt', variant: 'contained', color: 'primary' }
+        { label: "Avaleht", path: '/' },
+        { label: "Kontakt", path: '/kontakt', variant: 'contained', color: 'primary' }
     ];
 
     const drawer = (
@@ -35,12 +33,17 @@ const Header = () => {
             <List>
                 <ListItem disablePadding>
                     <ListItemButton component={RouterLink} to="/" onClick={handleDrawerToggle}>
-                        <ListItemText primary={t.home} />
+                        <ListItemText primary="Avaleht" />
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
                     <ListItemButton component={RouterLink} to="/kontakt" onClick={handleDrawerToggle}>
-                        <ListItemText primary={t.contact} />
+                        <ListItemText primary="Hinnakalkulaator" />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                    <ListItemButton component={RouterLink} to="/kontakt" onClick={handleDrawerToggle}>
+                        <ListItemText primary="Kontakt" />
                     </ListItemButton>
                 </ListItem>
                 <Divider sx={{ my: 1 }} />
@@ -49,7 +52,21 @@ const Header = () => {
                         <ListItemIcon sx={{ minWidth: 32 }}>
                             <PhoneIcon fontSize="small" />
                         </ListItemIcon>
-                        <ListItemText primary={t.callNow} />
+                        <ListItemText primary="Helista" />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                    <ListItemButton
+                        component="a"
+                        href="https://wa.me/37258243476"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={handleDrawerToggle}
+                    >
+                        <ListItemIcon sx={{ minWidth: 32 }}>
+                            <Typography sx={{ fontSize: '1.25rem' }}>💬</Typography>
+                        </ListItemIcon>
+                        <ListItemText primary="WhatsApp" />
                     </ListItemButton>
                 </ListItem>
             </List>
@@ -89,16 +106,25 @@ const Header = () => {
                             startIcon={<PhoneIcon />}
                             sx={{ ml: 2 }}
                         >
-                            {t.callNow}
+                            Helista
+                        </Button>
+                        <Button
+                            href="https://wa.me/37258243476"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            color="success"
+                            variant="contained"
+                            sx={{ ml: 1 }}
+                        >
+                            💬 WhatsApp
                         </Button>
                     </Box>
 
-                    <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                    <Box sx={{ display: { xs: 'flex', md: 'none' }, gap: 1 }}>
                         <IconButton
                             href="tel:+37258243476"
                             color="primary"
-                            aria-label="call now"
-                            sx={{ mr: 1 }}
+                            aria-label="helista"
                         >
                             <PhoneIcon />
                         </IconButton>

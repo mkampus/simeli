@@ -1,49 +1,51 @@
-import React, { useContext } from 'react';
-import { Container, Typography, Box, Grid, Paper } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { Container, Typography, Box, Grid, Paper, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
-import { LanguageContext } from '../context/LanguageContext';
-import ContactForm from '../components/contact/ContactForm';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import CalculateIcon from '@mui/icons-material/Calculate';
 import ContactInfo from '../components/contact/ContactInfo';
+import PriceCalculator from '../components/calculator/PriceCalculator';
+import QuoteForm from '../components/calculator/QuoteForm';
 
 const Contact = () => {
-    const { translations } = useContext(LanguageContext);
-    const t = translations.contact || {
-        metaTitle: "Kontakt | Simeli Saeveski | Saematerjal Märjamaal",
-        metaDescription: "Võtke ühendust Simeli Saeveskiga Märjamaal päringute, tellimuste või konsultatsiooni saamiseks. Asume Orgita tee 11.",
-        title: "Võta meiega ühendust",
-        subtitle: "Ootame teie küsimusi ja päringuid!",
-        formTitle: "Saada meile sõnum",
-        infoTitle: "Kontaktandmed ja Asukoht",
-        locationInfo: "Asume mugavalt Märjamaal, Raplamaal – lihtne ligipääs nii kohalikele kui kaugemalt tulijatele."
-    };
+    const [calculatorOpen, setCalculatorOpen] = useState(false);
+    const [searchParams] = useSearchParams();
 
-    // REPLACE WITH YOUR ACTUAL GOOGLE MAPS EMBED SRC
-    const mapEmbedSrc = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2061.3040525012443!2d24.41874504089357!3d58.89278961828076!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46ed314b6a054aed%3A0x4fd6514987c186bc!2sParking%20lot%2C%20Rapla%20maakond!5e0!3m2!1sen!2see!4v1745334345379!5m2!1sen!2see"; // EXAMPLE - REPLACE THIS
+// Use effect to check query params and open calculator if needed
+    React.useEffect(() => {
+        if (searchParams.get('calculator') === 'open') {
+            setCalculatorOpen(true);
+        }
+    }, [searchParams]);
+
+    const mapEmbedSrc = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2059.123456789012!2d24.418745!3d58.892789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46ed314b6a054aed%3A0x4fd6514987c186bc!2sSimeli%20Saeveski%20O%C3%9C!5e0!3m2!1set!2see!4v1745334345379";
 
     return (
         <>
             <Helmet>
-                <title>{t.metaTitle}</title>
-                <meta name="description" content={t.metaDescription} />
+                <title>Kontakt | Simeli Saeveski | Saematerjal Märjamaal</title>
+                <meta name="description" content="Võtke ühendust Simeli Saeveskiga Märjamaal päringute, tellimuste või konsultatsiooni saamiseks. Kasutage hinnakalkulaatorit ja saatke pakkumise taotlus otse." />
             </Helmet>
 
             <Box sx={{ py: 6, backgroundColor: 'background.default' }}>
                 <Container maxWidth="lg">
                     <Typography variant="h2" component="h1" align="center" gutterBottom>
-                        {t.title}
+                        Võta meiega ühendust
                     </Typography>
                     <Typography variant="h5" component="p" align="center" color="text.secondary" sx={{ mb: 6 }}>
-                        {t.subtitle}
+                        Ootame teie küsimusi ja päringuid!
                     </Typography>
 
                     <Grid container spacing={4}>
+                        {/* LEFT SIDE: Contact Info + Map */}
                         <Grid item xs={12} md={5}>
                             <Typography variant="h4" component="h2" gutterBottom sx={{ mb: 3 }}>
-                                {t.infoTitle}
+                                Kontaktandmed ja Asukoht
                             </Typography>
                             <ContactInfo />
                             <Typography variant="body1" sx={{ mt: 3, mb: 2 }}>
-                                {t.locationInfo}
+                                Asume mugavalt Märjamaal, Raplamaal – lihtne ligipääs nii kohalikele kui kaugemalt tulijatele.
                             </Typography>
                             <Box sx={{ height: 300, width: '100%', borderRadius: 1, overflow: 'hidden', border: '1px solid', borderColor: 'divider' }}>
                                 <iframe
@@ -59,12 +61,46 @@ const Contact = () => {
                             </Box>
                         </Grid>
 
+                        {/* RIGHT SIDE: Calculator + Quote Form */}
                         <Grid item xs={12} md={7}>
+                            {/* COLLAPSIBLE CALCULATOR */}
+                            <Accordion
+                                expanded={calculatorOpen}
+                                onChange={() => setCalculatorOpen(!calculatorOpen)}
+                                sx={{
+                                    mb: 3,
+                                    border: '1px solid',
+                                    borderColor: 'divider',
+                                    '&:before': { display: 'none' }
+                                }}
+                            >
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    sx={{
+                                        bgcolor: calculatorOpen ? 'primary.light' : 'background.paper',
+                                        color: calculatorOpen ? 'primary.contrastText' : 'text.primary',
+                                        '&:hover': {
+                                            bgcolor: 'primary.light',
+                                            color: 'primary.contrastText',
+                                            cursor: 'pointer'
+                                        },
+                                        transition: 'all 0.3s ease'
+                                    }}
+                                >
+                                    <CalculateIcon sx={{ mr: 1 }} />
+                                    <Typography variant="h6">Hinnakalkulaator</Typography>
+                                </AccordionSummary>
+                                <AccordionDetails sx={{ bgcolor: 'background.paper', p: 3 }}>
+                                    <PriceCalculator />
+                                </AccordionDetails>
+                            </Accordion>
+
+                            {/* QUOTE FORM - Always visible */}
                             <Typography variant="h4" component="h2" gutterBottom sx={{ mb: 3 }}>
-                                {t.formTitle}
+                                Küsi hinnapakkumist
                             </Typography>
                             <Paper elevation={3} sx={{ p: { xs: 2, sm: 4 } }}>
-                                <ContactForm />
+                                <QuoteForm />
                             </Paper>
                         </Grid>
                     </Grid>
