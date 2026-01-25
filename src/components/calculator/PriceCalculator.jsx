@@ -61,7 +61,8 @@ const PriceCalculator = () => {
                     totalNet: totalNet.toFixed(2),
                     totalGross: totalGross.toFixed(2),
                     vatAmount: (totalGross - totalNet).toFixed(2),
-                    pricePerM: (product.priceWithVat / (selectedLength / 1000)).toFixed(2)
+                    pricePerMWithoutVat: (product.priceWithoutVat / (selectedLength / 1000)).toFixed(2),
+                    pricePerMWithVat: (product.priceWithVat / (selectedLength / 1000)).toFixed(2)
                 });
             }
         }
@@ -139,7 +140,7 @@ const PriceCalculator = () => {
                         ) : (
                             <Paper sx={{ p: 3 }}>
                                 <Grid container spacing={2}>
-                                    {/* PAKSUS (width'i valimine) */}
+                                    {/* PAKSUS (width) */}
                                     <Grid item xs={12} sm={4}>
                                         <FormControl fullWidth>
                                             <InputLabel>Paksus (mm)</InputLabel>
@@ -155,7 +156,7 @@ const PriceCalculator = () => {
                                         </FormControl>
                                     </Grid>
 
-                                    {/* LAIUS (height'i valimine) */}
+                                    {/* LAIUS (height) */}
                                     <Grid item xs={12} sm={4}>
                                         <FormControl fullWidth disabled={!width}>
                                             <InputLabel>Laius (mm)</InputLabel>
@@ -251,9 +252,15 @@ const PriceCalculator = () => {
                                             </Table>
                                         </TableContainer>
 
-                                        <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-                                            Hind meetri kohta (koos KM-ga): €{calculation.pricePerM}/m
-                                        </Typography>
+                                        {/* Hind meetri kohta */}
+                                        <Box sx={{ mt: 2, p: 2, bgcolor: '#f9f9f9', borderRadius: 1 }}>
+                                            <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.5 }}>
+                                                Hind meetri kohta (ilma KM-ta): €{calculation.pricePerMWithoutVat.replace('.', ',')}/m
+                                            </Typography>
+                                            <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+                                                Hind meetri kohta (koos KM-ga): €{calculation.pricePerMWithVat.replace('.', ',')}/m
+                                            </Typography>
+                                        </Box>
 
                                         <Button
                                             fullWidth
