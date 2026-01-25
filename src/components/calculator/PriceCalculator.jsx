@@ -139,12 +139,13 @@ const PriceCalculator = () => {
                         ) : (
                             <Paper sx={{ p: 3 }}>
                                 <Grid container spacing={2}>
+                                    {/* PAKSUS (width'i valimine) */}
                                     <Grid item xs={12} sm={4}>
                                         <FormControl fullWidth>
-                                            <InputLabel>Laius (mm)</InputLabel>
+                                            <InputLabel>Paksus (mm)</InputLabel>
                                             <Select
                                                 value={width}
-                                                label="Laius (mm)"
+                                                label="Paksus (mm)"
                                                 onChange={(e) => setWidth(e.target.value)}
                                             >
                                                 {availableWidths.map(w => (
@@ -154,12 +155,13 @@ const PriceCalculator = () => {
                                         </FormControl>
                                     </Grid>
 
+                                    {/* LAIUS (height'i valimine) */}
                                     <Grid item xs={12} sm={4}>
                                         <FormControl fullWidth disabled={!width}>
-                                            <InputLabel>Paksus (mm)</InputLabel>
+                                            <InputLabel>Laius (mm)</InputLabel>
                                             <Select
                                                 value={height}
-                                                label="Paksus (mm)"
+                                                label="Laius (mm)"
                                                 onChange={(e) => setHeight(e.target.value)}
                                             >
                                                 {availableHeights.map(h => (
@@ -169,6 +171,7 @@ const PriceCalculator = () => {
                                         </FormControl>
                                     </Grid>
 
+                                    {/* KOGUS */}
                                     <Grid item xs={12} sm={4}>
                                         <TextField
                                             fullWidth
@@ -176,6 +179,7 @@ const PriceCalculator = () => {
                                             type="number"
                                             value={quantity}
                                             onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                                            inputProps={{ min: 1 }}
                                         />
                                     </Grid>
                                 </Grid>
