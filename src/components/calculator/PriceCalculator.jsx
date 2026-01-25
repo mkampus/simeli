@@ -69,21 +69,16 @@ const PriceCalculator = () => {
 
     const handleAdd = () => {
         if (calculation) {
-            // Ensure we pass all needed data to QuoteContext
             const quoteItem = {
                 lengthMm: selectedLength,
                 lengthLabel: calculation.lengthLabel,
                 width: parseInt(calculation.width),
                 height: parseInt(calculation.height),
-                // Prices PER PIECE
                 priceWithoutVat: parseFloat(calculation.priceWithoutVat),
                 priceWithVat: parseFloat(calculation.priceWithVat),
-                // Totals for this line item
                 totalNet: parseFloat(calculation.totalNet),
                 totalGross: parseFloat(calculation.totalGross),
                 vatAmount: parseFloat(calculation.vatAmount),
-                // For display
-                lengthMm: selectedLength,
             };
 
             addToQuote(quoteItem, quantity);
@@ -217,7 +212,7 @@ const PriceCalculator = () => {
                                                         </TableCell>
                                                         <TableCell
                                                             align="right"
-                                                            sx={{ fontWeight: 'bold', fontSize: '1rem' }}
+                                                            sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}
                                                         >
                                                             €{formatPrice(calculation.totalNet)}
                                                         </TableCell>
@@ -239,7 +234,7 @@ const PriceCalculator = () => {
                                                     {/* Row 4: TOTAL WITH VAT - MAIN TOTAL */}
                                                     <TableRow sx={{ bgcolor: 'primary.light', color: 'primary.contrastText' }}>
                                                         <TableCell colSpan={2} sx={{ fontWeight: 'bold', color: 'inherit' }}>
-                                                            KOKKU (KM-ga)
+                                                            KOKKU (koos KM-ga)
                                                         </TableCell>
                                                         <TableCell
                                                             align="right"
@@ -253,7 +248,7 @@ const PriceCalculator = () => {
                                         </TableContainer>
 
                                         <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-                                            Hind meetri kohta (KM-ga): €{calculation.pricePerM}/m
+                                            Hind meetri kohta (koos KM-ga): €{calculation.pricePerM}/m
                                         </Typography>
 
                                         <Button

@@ -3,15 +3,14 @@
 const VAT_RATE = 0.24; // 24% VAT
 
 const lumberPricesByLength = {
-
     3000: {
         lengthMm: 3000,
         lengthLabel: "3m",
         cubicMeterPrice: 310.00,
         products: [
             { width: 25, height: 50, priceWithoutVat: 1.16 },
-            { width: 50, height: 50, priceWithoutVat: 2.32 },
-            { width: 25, height: 100, priceWithoutVat: 2.32 },
+            { width: 50, height: 50, priceWithoutVat: 2.33 },
+            { width: 25, height: 100, priceWithoutVat: 2.33 },
             { width: 25, height: 150, priceWithoutVat: 3.49 },
             { width: 25, height: 200, priceWithoutVat: 4.65 },
             { width: 50, height: 100, priceWithoutVat: 4.65 },
@@ -36,7 +35,7 @@ const lumberPricesByLength = {
             { width: 25, height: 150, priceWithoutVat: 4.25 },
             { width: 25, height: 200, priceWithoutVat: 5.67 },
             { width: 50, height: 100, priceWithoutVat: 5.67 },
-            { width: 50, height: 150, priceWithoutVat: 8.50 },
+            { width: 50, height: 150, priceWithoutVat: 8.51 },
             { width: 50, height: 200, priceWithoutVat: 11.34 },
             { width: 100, height: 100, priceWithoutVat: 11.34 },
             { width: 100, height: 150, priceWithoutVat: 17.01 },
@@ -79,6 +78,7 @@ const lumberPricesByLength = {
             { width: 100, height: 100, priceWithoutVat: 16.83 },
             { width: 100, height: 150, priceWithoutVat: 25.25 },
             { width: 100, height: 200, priceWithoutVat: 33.66 },
+            { width: 25, height: 90, priceWithoutVat: 3.79 },
         ]
     },
     6000: {
@@ -138,19 +138,18 @@ export const findProduct = (lengthMm, width, height) => {
 
     if (!product) return null;
 
-    // Fixed calculation here:
-    const calculatedPriceWithVat = product.priceWithoutVat * (1 + VAT_RATE);
+    const priceWithVat = product.priceWithoutVat * (1 + VAT_RATE);
 
     return {
-        length: lengthMm,
+        lengthMm: lengthMm,
         lengthLabel: lengthData.lengthLabel,
         width,
         height,
         priceWithoutVat: product.priceWithoutVat,
-        priceWithVat: calculatedPriceWithVat,
+        priceWithVat: priceWithVat,
         cubicMeterPrice: lengthData.cubicMeterPrice,
         cubicMeterPriceWithVat: lengthData.cubicMeterPrice * (1 + VAT_RATE),
-        piecePrice: calculatedPriceWithVat // Now correctly defined
+        piecePrice: priceWithVat
     };
 };
 
@@ -183,7 +182,7 @@ export const getSimilarProducts = (currentProduct, maxResults = 5) => {
             index === self.findIndex(t => t.width === item.width && t.height === item.height)
     );
 
-    // Map them to include VAT for the UI
+    // Map them to include VAT
     return unique.slice(0, maxResults).map(p => ({
         ...p,
         priceWithVat: p.priceWithoutVat * (1 + VAT_RATE),

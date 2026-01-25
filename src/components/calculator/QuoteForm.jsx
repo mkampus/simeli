@@ -2,7 +2,7 @@
 import React, { useState, useContext } from 'react';
 import {
     TextField, Button, Grid, Box, CircularProgress, Alert,
-    Typography, Paper, Divider, List, ListItem, ListItemText
+    Typography, Paper, Divider, List, ListItem
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -19,7 +19,7 @@ const validatePhoneNumber = (phone) => {
 
 const QuoteForm = () => {
     const { quoteItems, clearQuote, removeItem, calculateTotals } = useContext(QuoteContext);
-    const { totalPrice } = calculateTotals();
+    const { totalNetPrice, totalGrossPrice, totalVatAmount } = calculateTotals();
 
     const [formData, setFormData] = useState({
         name: '',
@@ -73,8 +73,12 @@ const QuoteForm = () => {
         setStatus('submitting');
 
         const itemsList = quoteItems
-            .map(item => `${item.width}×${item.height}mm (${item.lengthLabel}): ${item.quantity}tk @ €${item.piecePrice.toFixed(2)} = €${(item.piecePrice * item.quantity).toFixed(2)}`)
-            .join('\n');
+            .map(item => {
+                const net = (item.priceWithoutVat * item.quantity).toFixed(2);
+                const gross = (item.priceWithVat * item.quantity).toFixed(2);
+                return `${item.width}×${item.height}mm (${item.lengthLabel}): ${item.quantity}tk\n  Ilma KM-ta: €${net}\n  Koos KM-ga: €${gross}`;
+            })
+            .join('\n\n');
 
         const emailBody = `
 HINNAPÄRING
@@ -90,7 +94,9 @@ ${formData.message}
 📦 NÕUTUD MATERJALID:
 ${itemsList}
 
-💰 ORIENTEERUV KOGUHIND: €${totalPrice.toFixed(2)}
+💰 LÕPPHIND:
+Ilma KM-ta:  €${totalNetPrice.toFixed(2)}
+Koos KM-ga:  €${totalGrossPrice.toFixed(2)}
         `;
 
         try {
@@ -158,11 +164,13 @@ ${itemsList}
                                             <Typography variant="caption" color="text.secondary">
                                                 {item.quantity}tk
                                             </Typography>
-                                            <Typography variant="body2" sx={{ mt: 0.5 }}>
-                                                <span style={{ color: '#666' }}>Ilma KM-ta:</span> €{itemTotalNet.toFixed(2)}
+                                            {/* ILMA KM-TA BOLDIS JA ESILE TOODUD */}
+                                            <Typography variant="body2" sx={{ mt: 0.5, fontWeight: 'bold', color: '#333', fontSize: '1.05rem' }}>
+                                                Ilma KM-ta: €{itemTotalNet.toFixed(2)}
                                             </Typography>
-                                            <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-                                                <span style={{ color: '#333' }}>KM-ga:</span> €{itemTotalGross.toFixed(2)}
+                                            {/* KM-GA NORMAAL */}
+                                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                                Koos KM-ga: €{itemTotalGross.toFixed(2)}
                                             </Typography>
                                         </Box>
                                         <Button
@@ -182,23 +190,32 @@ ${itemsList}
 
                         {/* Totals Summary */}
                         <Box sx={{ bgcolor: '#f5f5f5', p: 1.5, borderRadius: 1 }}>
+                            {/* ILMA KM-TA BOLDIS JA ESILE TOODUD */}
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
-                                <Typography variant="body2">Kokku (ilma KM-ta):</Typography>
-                                <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                                    €{calculateTotals().totalNetPrice.toFixed(2)}
+                                <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#333' }}>
+                                    Kokku (ilma KM-ta):
+                                </Typography>
+                                <Typography variant="body2" sx={{ fontWeight: 'bold', fontSize: '1.05rem', color: '#333' }}>
+                                    €{totalNetPrice.toFixed(2)}
                                 </Typography>
                             </Box>
+                            {/* KM RIDA NORMAAL */}
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                                <Typography variant="body2">KM (24%):</Typography>
-                                <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'warning.main' }}>
-                                    +€{calculateTotals().totalVatAmount.toFixed(2)}
+                                <Typography variant="body2" color="text.secondary">
+                                    KM (24%):
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    +€{totalVatAmount.toFixed(2)}
                                 </Typography>
                             </Box>
                             <Divider sx={{ my: 1 }} />
+                            {/* KM-GA TOTAL */}
                             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>KOKKU (KM-ga):</Typography>
-                                <Typography variant="subtitle2" sx={{ fontWeight: 'bold', color: 'primary.main', fontSize: '1.1rem' }}>
-                                    €{calculateTotals().totalGrossPrice.toFixed(2)}
+                                <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
+                                    KOKKU (koos KM-ga):
+                                </Typography>
+                                <Typography variant="h6" sx={{ fontWeight: '600', color: 'primary.main' }}>
+                                    €{totalGrossPrice.toFixed(2)}
                                 </Typography>
                             </Box>
                         </Box>

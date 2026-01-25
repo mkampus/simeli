@@ -76,14 +76,14 @@ const QuoteRequestDrawer = ({ open, onClose, onSubmit }) => {
                                     </Stack>
                                 </Stack>
 
-                                {/* Price breakdown */}
+                                {/* Price breakdown - ILMA KM-TA BOLDIS JA ESILE TOODUD */}
                                 <Box sx={{ width: '100%', fontSize: '0.85rem', ml: 1 }}>
-                                    <Typography variant="caption" color="text.secondary">
+                                    <Typography variant="caption" sx={{ fontWeight: 'bold', color: '#333', fontSize: '0.9rem' }}>
                                         Ilma KM-ta: €{itemTotalNet.toFixed(2)}
                                     </Typography>
                                     <br />
-                                    <Typography variant="caption" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-                                        KM-ga: €{itemTotalGross.toFixed(2)}
+                                    <Typography variant="caption" color="text.secondary">
+                                        Koos KM-ga: €{itemTotalGross.toFixed(2)}
                                     </Typography>
                                 </Box>
                             </ListItem>
@@ -94,22 +94,31 @@ const QuoteRequestDrawer = ({ open, onClose, onSubmit }) => {
 
             <Box sx={{ p: 3, bgcolor: 'background.default', borderTop: '1px solid', borderColor: 'divider' }}>
                 <Stack spacing={1} mb={2}>
+                    {/* ILMA KM-TA BOLDIS JA ESILE TOODUD */}
                     <Stack direction="row" justifyContent="space-between">
-                        <Typography variant="body2">Kokku (ilma KM-ta):</Typography>
-                        <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                        <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#333' }}>
+                            Kokku (ilma KM-ta):
+                        </Typography>
+                        <Typography variant="body2" sx={{ fontWeight: 'bold', fontSize: '1.05rem', color: '#333' }}>
                             €{totalNetPrice.toFixed(2)}
                         </Typography>
                     </Stack>
+                    {/* KM RIDA NORMAAL */}
                     <Stack direction="row" justifyContent="space-between">
-                        <Typography variant="body2">KM (24%):</Typography>
-                        <Typography variant="body2" sx={{ color: 'warning.main' }}>
+                        <Typography variant="body2" color="text.secondary">
+                            KM (24%):
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
                             +€{totalVatAmount.toFixed(2)}
                         </Typography>
                     </Stack>
                     <Divider />
+                    {/* KM-GA TOTAL */}
                     <Stack direction="row" justifyContent="space-between">
-                        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>KOKKU:</Typography>
-                        <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+                        <Typography variant="h6" sx={{ fontWeight: '600', color: 'text.secondary' }}>
+                            KOKKU:
+                        </Typography>
+                        <Typography variant="h6" sx={{ fontWeight: '600', color: 'primary.main' }}>
                             €{totalGrossPrice.toFixed(2)}
                         </Typography>
                     </Stack>
