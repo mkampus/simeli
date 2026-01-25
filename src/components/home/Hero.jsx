@@ -10,7 +10,7 @@ const Hero = () => {
                 py: { xs: 8, md: 12 },
                 textAlign: 'center',
                 color: 'white',
-                backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(public/images/saeveski-hero-bg.webp)',
+                backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/images/saeveski-hero-bg.webp)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 display: 'flex',
