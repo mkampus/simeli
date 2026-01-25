@@ -1,3 +1,4 @@
+// src/context/QuoteContext.js
 import React, { createContext, useState, useCallback, useEffect } from 'react';
 
 export const QuoteContext = createContext();
@@ -6,24 +7,16 @@ export const QuoteProvider = ({ children }) => {
     const [quoteItems, setQuoteItems] = useState(() => {
         try {
             const localData = localStorage.getItem('simeli_quote_cart');
-
-            // If no data exists, return empty array
             if (!localData) return [];
-
-            // Parse the data
             const parsed = JSON.parse(localData);
-
-            // Validate it's actually an array
             if (!Array.isArray(parsed)) {
                 console.warn('Invalid quote cart data in localStorage, clearing it');
                 localStorage.removeItem('simeli_quote_cart');
                 return [];
             }
-
             return parsed;
         } catch (e) {
             console.error('Failed to parse localStorage quote cart:', e);
-            // Clear corrupted data so it doesn't happen again
             localStorage.removeItem('simeli_quote_cart');
             return [];
         }
@@ -40,7 +33,7 @@ export const QuoteProvider = ({ children }) => {
             const existingIndex = prevItems.findIndex(
                 item => item.width === product.width &&
                     item.height === product.height &&
-                    item.length === product.length
+                    item.lengthMm === product.lengthMm
             );
 
             if (existingIndex > -1) {
@@ -52,33 +45,55 @@ export const QuoteProvider = ({ children }) => {
         });
     }, []);
 
-    const updateQuantity = useCallback((width, height, length, newQuantity) => {
+    const updateQuantity = useCallback((width, height, lengthMm, newQuantity) => {
         if (newQuantity <= 0) {
-            setQuoteItems(prev => prev.filter(i => !(i.width === width && i.height === height && i.length === length)));
+            setQuoteItems(prev => prev.filter(i => !(i.width === width && i.height === height && i.lengthMm === lengthMm)));
             return;
         }
         setQuoteItems(prev => prev.map(item =>
-            (item.width === width && item.height === height && item.length === length)
-                ? { ...item, quantity: newQuantity } : item
+            (item.width === width && item.height === height && item.lengthMm === lengthMm)
+                ? { ...item, quantity: newQuantity }
+                : item
         ));
     }, []);
 
-    const removeItem = useCallback((width, height, length) => {
-        setQuoteItems(prev => prev.filter(i => !(i.width === width && i.height === height && i.length === length)));
+    const removeItem = useCallback((width, height, lengthMm) => {
+        setQuoteItems(prev => prev.filter(i => !(i.width === width && i.height === height && i.lengthMm === lengthMm)));
     }, []);
 
     const clearQuote = useCallback(() => setQuoteItems([]), []);
 
     const calculateTotals = useCallback(() => {
-        const totalPrice = quoteItems.reduce((sum, item) => sum + (item.piecePrice * item.quantity), 0);
-        const itemCount = quoteItems.reduce((sum, item) => sum + item.quantity, 0);
-        return { totalPrice, itemCount };
+        const totals = quoteItems.reduce((acc, item) => {
+            const itemTotalNet = item.priceWithoutVat * item.quantity;
+            const itemTotalGross = item.priceWithVat * item.quantity;
+            const itemVat = itemTotalGross - itemTotalNet;
+
+            return {
+                totalNetPrice: acc.totalNetPrice + itemTotalNet,
+                totalGrossPrice: acc.totalGrossPrice + itemTotalGross,
+                totalVatAmount: acc.totalVatAmount + itemVat,
+                itemCount: acc.itemCount + item.quantity,
+            };
+        }, {
+            totalNetPrice: 0,
+            totalGrossPrice: 0,
+            totalVatAmount: 0,
+            itemCount: 0,
+        });
+
+        return totals;
     }, [quoteItems]);
 
     return (
         <QuoteContext.Provider value={{
-            quoteItems, addToQuote, updateQuantity, removeItem,
-            clearQuote, calculateTotals, isDrawerOpen,
+            quoteItems,
+            addToQuote,
+            updateQuantity,
+            removeItem,
+            clearQuote,
+            calculateTotals,
+            isDrawerOpen,
             openDrawer: () => setIsDrawerOpen(true),
             closeDrawer: () => setIsDrawerOpen(false)
         }}>

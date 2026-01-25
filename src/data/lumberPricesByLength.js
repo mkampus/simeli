@@ -3,16 +3,7 @@
 const VAT_RATE = 0.24; // 24% VAT
 
 const lumberPricesByLength = {
-    2000: {
-        lengthMm: 2000,
-        lengthLabel: "2m",
-        cubicMeterPrice: 300.00,
-        products: [
-            { width: 25, height: 50, priceWithoutVat: 0.75 },
-            { width: 50, height: 50, priceWithoutVat: 1.50 },
-            { width: 50, height: 100, priceWithoutVat: 3.00 },
-        ]
-    },
+
     3000: {
         lengthMm: 3000,
         lengthLabel: "3m",

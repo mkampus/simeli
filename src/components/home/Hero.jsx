@@ -42,7 +42,7 @@ const Hero = () => {
                         fontSize: { xs: '1rem', sm: '1.1rem', md: '1.25rem' }
                     }}
                 >
-                    Terrassilauad, voodrilauad, sauna lavalauad. Kiire hinnapakkumine, paindlikud kogused.
+                    Kiire hinnapakkumine, paindlikud kogused.
                 </Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, flexWrap: 'wrap' }}>
                     <Button

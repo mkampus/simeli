@@ -135,36 +135,73 @@ ${itemsList}
                     </Typography>
                     <Paper variant="outlined" sx={{ p: 2, mb: 3, bgcolor: 'grey.50' }}>
                         <List disablePadding>
-                            {quoteItems.map((item, idx) => (
-                                <ListItem
-                                    key={idx}
-                                    disablePadding
-                                    sx={{
-                                        py: 1,
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center'
-                                    }}
-                                >
-                                    <ListItemText
-                                        primary={`${item.width}×${item.height}mm (${item.lengthLabel})`}
-                                        secondary={`${item.quantity}tk × ${item.piecePrice.toFixed(2)}€ = ${(item.piecePrice * item.quantity).toFixed(2)}€`}
-                                    />
-                                    <Button
-                                        size="small"
-                                        color="error"
-                                        onClick={() => removeItem(item.width, item.height, item.length)}
-                                        startIcon={<DeleteOutlineIcon />}
+                            {quoteItems.map((item, idx) => {
+                                const itemTotalNet = item.priceWithoutVat * item.quantity;
+                                const itemTotalGross = item.priceWithVat * item.quantity;
+
+                                return (
+                                    <ListItem
+                                        key={idx}
+                                        disablePadding
+                                        sx={{
+                                            py: 2,
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'flex-start',
+                                            borderBottom: '1px solid #eee'
+                                        }}
                                     >
-                                        Eemalda
-                                    </Button>
-                                </ListItem>
-                            ))}
+                                        <Box sx={{ flex: 1 }}>
+                                            <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
+                                                {item.width}×{item.height}mm ({item.lengthLabel})
+                                            </Typography>
+                                            <Typography variant="caption" color="text.secondary">
+                                                {item.quantity}tk
+                                            </Typography>
+                                            <Typography variant="body2" sx={{ mt: 0.5 }}>
+                                                <span style={{ color: '#666' }}>Ilma KM-ta:</span> €{itemTotalNet.toFixed(2)}
+                                            </Typography>
+                                            <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+                                                <span style={{ color: '#333' }}>KM-ga:</span> €{itemTotalGross.toFixed(2)}
+                                            </Typography>
+                                        </Box>
+                                        <Button
+                                            size="small"
+                                            color="error"
+                                            onClick={() => removeItem(item.width, item.height, item.lengthMm)}
+                                            startIcon={<DeleteOutlineIcon />}
+                                        >
+                                            Eemalda
+                                        </Button>
+                                    </ListItem>
+                                );
+                            })}
                         </List>
-                        <Divider sx={{ my: 1 }} />
-                        <Typography variant="subtitle1" align="right" sx={{ fontWeight: 'bold' }}>
-                            Kokku: {totalPrice.toFixed(2)}€
-                        </Typography>
+
+                        <Divider sx={{ my: 2 }} />
+
+                        {/* Totals Summary */}
+                        <Box sx={{ bgcolor: '#f5f5f5', p: 1.5, borderRadius: 1 }}>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
+                                <Typography variant="body2">Kokku (ilma KM-ta):</Typography>
+                                <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                                    €{calculateTotals().totalNetPrice.toFixed(2)}
+                                </Typography>
+                            </Box>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                                <Typography variant="body2">KM (24%):</Typography>
+                                <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'warning.main' }}>
+                                    +€{calculateTotals().totalVatAmount.toFixed(2)}
+                                </Typography>
+                            </Box>
+                            <Divider sx={{ my: 1 }} />
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>KOKKU (KM-ga):</Typography>
+                                <Typography variant="subtitle2" sx={{ fontWeight: 'bold', color: 'primary.main', fontSize: '1.1rem' }}>
+                                    €{calculateTotals().totalGrossPrice.toFixed(2)}
+                                </Typography>
+                            </Box>
+                        </Box>
                     </Paper>
                 </>
             )}

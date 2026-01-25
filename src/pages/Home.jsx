@@ -15,7 +15,8 @@ import Button from '../components/common/Button';
 
 const Home = () => {
     const servicesList = [
-        "Saematerjali lõikus (palgist lauani)",
+        "Pakume ka teenustöid ja teeme sinu palgist valmismaterjali!",
+        "Ostame palke",
         "Materjali hööveldamine (ühelt või mitmelt küljelt)",
         "Pikkupidi järkamine täpsusmõõtu (sh 22mm ja 25mm paksused)",
         "Erinevate puiduliikide töötlemine (mänd, kuusk jne)",
@@ -46,8 +47,8 @@ const Home = () => {
         { q: "Millised on teie tarneajad?", a: "Märjamaa ja Raplamaa: 24 tundi\nTallinn ja lähiomavalitsused: 48 tundi\nMuud piirkonnad: 3-5 päeva kokkuleppel\nKiirem tarne võimalik olenevalt mahust." },
         { q: "Kas pakute ka transporti?", a: "Jah, pakume kokkuleppel transporditeenust Raplamaa piires ja vajadusel ka kaugemale. Transpordi hind sõltub kogusest ja sihtkohast." },
         { q: "Milliseid puiduliike te töötlete?", a: "Peamiselt töötleme kohalikke okaspuid nagu mänd ja kuusk, kuid vastavalt võimalustele ja kokkuleppele saame töödelda ka teisi liike." },
-        { q: "Mis on minimaalne tellimuse kogus?", a: "Minimaalne tellimuse kogus ei ole. Väga väikeste koguste puhul võib rakenduda väiketellimuse tasu. Küsi julgelt hinnapakkumist!" },
-        { q: "Kas materjal on kuiv?", a: "Pakume nii värskelt saetud kui ka õhukuiva materjali. Õhukuiv materjal on odavam, kuid märgem kui kiln-kuivatatud puit. Anname nõu, milline materjal teie projekti jaoks parim on." },
+        { q: "Mis on minimaalne tellimuse kogus?", a: "Minimaalset tellimuse kogust ei ole. Väga väikeste koguste puhul võib rakenduda väiketellimuse tasu. Küsi julgelt hinnapakkumist!" },
+        { q: "Kas materjal on kuiv?", a: "Pakume nii värskelt saetud kui ka õhukuiva materjali. Võta ühendust ja anname nõu, milline materjal teie projekti jaoks parim on." },
     ];
 
     return (
@@ -91,7 +92,7 @@ const Home = () => {
                                 </Typography>
                                 <Typography variant="body1" sx={{ mb: 2 }}>
                                     <HistoryIcon sx={{ verticalAlign: 'middle', mr: 1, color: 'primary.main' }} />
-                                    Omame pikaajalist kogemust puiduvaldkonnas ja tagame asjatundliku teeninduse ning kvaliteetse materjali.
+                                    Meil on pikaajaline kogemus puiduvaldkonnas ja tagame asjatundliku teeninduse ning kvaliteetse materjali.
                                 </Typography>
                                 <Typography variant="body1" sx={{ mb: 2 }}>
                                     <LocalShippingIcon sx={{ verticalAlign: 'middle', mr: 1, color: 'primary.main' }} />
@@ -128,7 +129,7 @@ const Home = () => {
                                     24 tundi
                                 </Typography>
                                 <Typography variant="body2" sx={{ mt: 1 }}>
-                                    Tellitud sama päeval – kohale järgmisel päeval
+                                    Laokaup kohale kuni 24 tunniga
                                 </Typography>
                             </Paper>
                         </Grid>
@@ -202,35 +203,35 @@ const Home = () => {
 
             <FeatureSection />
 
-            <Box id="tagasiside" sx={{ py: 6, backgroundColor: 'background.paper' }}>
-                <Container maxWidth="lg">
-                    <Typography variant="h2" component="h2" align="center" gutterBottom sx={{ mb: 4 }}>
-                        Klientide Tagasiside
-                    </Typography>
-                    <Grid container spacing={3} justifyContent="center">
-                        {testimonialsList.map((testimonial, index) => (
-                            <Grid item xs={12} sm={6} md={4} key={index}>
-                                <Paper elevation={1} sx={{ p: 3, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                                    <Box sx={{ display: 'flex', alignItems: 'flex-start', mb: 1 }}>
-                                        <FormatQuoteIcon sx={{ color: 'primary.main', mr: 1, transform: 'scaleX(-1)' }} />
-                                        <Typography variant="body1" sx={{ fontStyle: 'italic' }}>{testimonial.quote}</Typography>
-                                    </Box>
-                                    <Box>
-                                        <Typography variant="caption" color="text.secondary" sx={{ mt: 2, display: 'block' }}>
-                                            — <strong>{testimonial.author}</strong>
-                                        </Typography>
-                                        {testimonial.company && (
-                                            <Typography variant="caption" color="primary" sx={{ display: 'block', mt: 0.5 }}>
-                                                ✓ Kontrollitud klient
-                                            </Typography>
-                                        )}
-                                    </Box>
-                                </Paper>
-                            </Grid>
-                        ))}
-                    </Grid>
-                </Container>
-            </Box>
+            {/*<Box id="tagasiside" sx={{ py: 6, backgroundColor: 'background.paper' }}>*/}
+            {/*    <Container maxWidth="lg">*/}
+            {/*        <Typography variant="h2" component="h2" align="center" gutterBottom sx={{ mb: 4 }}>*/}
+            {/*            Klientide Tagasiside*/}
+            {/*        </Typography>*/}
+            {/*        <Grid container spacing={3} justifyContent="center">*/}
+            {/*            {testimonialsList.map((testimonial, index) => (*/}
+            {/*                <Grid item xs={12} sm={6} md={4} key={index}>*/}
+            {/*                    <Paper elevation={1} sx={{ p: 3, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>*/}
+            {/*                        <Box sx={{ display: 'flex', alignItems: 'flex-start', mb: 1 }}>*/}
+            {/*                            <FormatQuoteIcon sx={{ color: 'primary.main', mr: 1, transform: 'scaleX(-1)' }} />*/}
+            {/*                            <Typography variant="body1" sx={{ fontStyle: 'italic' }}>{testimonial.quote}</Typography>*/}
+            {/*                        </Box>*/}
+            {/*                        <Box>*/}
+            {/*                            <Typography variant="caption" color="text.secondary" sx={{ mt: 2, display: 'block' }}>*/}
+            {/*                                — <strong>{testimonial.author}</strong>*/}
+            {/*                            </Typography>*/}
+            {/*                            {testimonial.company && (*/}
+            {/*                                <Typography variant="caption" color="primary" sx={{ display: 'block', mt: 0.5 }}>*/}
+            {/*                                    ✓ Kontrollitud klient*/}
+            {/*                                </Typography>*/}
+            {/*                            )}*/}
+            {/*                        </Box>*/}
+            {/*                    </Paper>*/}
+            {/*                </Grid>*/}
+            {/*            ))}*/}
+            {/*        </Grid>*/}
+            {/*    </Container>*/}
+            {/*</Box>*/}
 
             <Box id="kkk" sx={{ py: 6, backgroundColor: 'background.default' }}>
                 <Container maxWidth="md">
@@ -270,19 +271,19 @@ const Home = () => {
                 </Container>
             </Box>
 
-            <Box sx={{ py: 6, backgroundColor: 'background.paper' }}>
-                <Container maxWidth="lg">
-                    <Typography variant="h2" component="h2" align="center" gutterBottom>
-                        Tehtud Tööde Näited
-                    </Typography>
-                    <Typography variant="h6" component="p" align="center" color="text.secondary" sx={{ mb: 4, maxWidth: '700px', mx: 'auto' }}>
-                        Oleme aidanud paljusid kliente nende ehitus- ja renoveerimisprojektides.
-                    </Typography>
-                    <Box sx={{ minHeight: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px dashed grey', mt: 4, borderRadius: 1 }}>
-                        <Typography color="textSecondary">(Pildigalerii tehtud töödest - nt. terrassilauad, voodrilauad, ehituskonstruktsioonid)</Typography>
-                    </Box>
-                </Container>
-            </Box>
+            {/*<Box sx={{ py: 6, backgroundColor: 'background.paper' }}>*/}
+            {/*    <Container maxWidth="lg">*/}
+            {/*        <Typography variant="h2" component="h2" align="center" gutterBottom>*/}
+            {/*            Tehtud Tööde Näited*/}
+            {/*        </Typography>*/}
+            {/*        <Typography variant="h6" component="p" align="center" color="text.secondary" sx={{ mb: 4, maxWidth: '700px', mx: 'auto' }}>*/}
+            {/*            Oleme aidanud paljusid kliente nende ehitus- ja renoveerimisprojektides.*/}
+            {/*        </Typography>*/}
+            {/*        <Box sx={{ minHeight: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px dashed grey', mt: 4, borderRadius: 1 }}>*/}
+            {/*            <Typography color="textSecondary">(Pildigalerii tehtud töödest - nt. terrassilauad, voodrilauad, ehituskonstruktsioonid)</Typography>*/}
+            {/*        </Box>*/}
+            {/*    </Container>*/}
+            {/*</Box>*/}
         </>
     );
 };

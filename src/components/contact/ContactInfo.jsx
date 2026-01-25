@@ -11,9 +11,9 @@ const contactDetails = {
     phone: "+372 58243476",
     email: "simelisaeveski@gmail.com",
     hours: [
-        "E-R: 8:00 - 17:00",
-        "L: 9:00 - 14:00",
-        "P: Suletud"
+        "E-N: 6:00 - 16:00",
+        "R: 6:00 - 12:00",
+
     ]
 };
 

@@ -8,14 +8,16 @@ const QuoteButton = ({ onClick }) => {
     const { quoteItems, calculateTotals } = useContext(QuoteContext);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-    const { itemCount, totalPrice } = calculateTotals();
+
+    // Get new totals format
+    const { itemCount, totalGrossPrice } = calculateTotals();
 
     if (itemCount === 0) {
         return null;
     }
 
     return (
-        <Tooltip title={`€${totalPrice.toFixed(2)}`}>
+        <Tooltip title={`€${totalGrossPrice.toFixed(2)}`}>
             <Fab
                 color="primary"
                 aria-label="Ava hinnapäring"

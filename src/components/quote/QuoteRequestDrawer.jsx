@@ -14,7 +14,9 @@ const QuoteRequestDrawer = ({ open, onClose, onSubmit }) => {
     const { quoteItems, removeItem, updateQuantity, calculateTotals } = useContext(QuoteContext);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-    const { totalPrice, itemCount } = calculateTotals();
+
+    // Get the new totals format
+    const { totalNetPrice, totalGrossPrice, totalVatAmount, itemCount } = calculateTotals();
 
     return (
         <Drawer
@@ -44,44 +46,73 @@ const QuoteRequestDrawer = ({ open, onClose, onSubmit }) => {
                         <Typography color="text.secondary">Päring on tühi</Typography>
                     </Box>
                 ) : (
-                    quoteItems.map((item) => (
-                        <ListItem
-                            key={`${item.width}-${item.height}-${item.length}`}
-                            sx={{ borderBottom: '1px solid', borderColor: 'divider', py: 2, flexDirection: 'column', alignItems: 'flex-start' }}
-                        >
-                            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                                <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-                                    {item.width}×{item.height}mm – {item.lengthLabel}
-                                </Typography>
-                                <IconButton size="small" color="error" onClick={() => removeItem(item.width, item.height, item.length)}>
-                                    <DeleteOutlineIcon fontSize="small" />
-                                </IconButton>
-                            </Box>
+                    quoteItems.map((item) => {
+                        const itemTotalNet = item.priceWithoutVat * item.quantity;
+                        const itemTotalGross = item.priceWithVat * item.quantity;
 
-                            <Stack direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }}>
-                                <Stack direction="row" alignItems="center" sx={{ border: '1px solid #ccc', borderRadius: 1 }}>
-                                    <IconButton size="small" onClick={() => updateQuantity(item.width, item.height, item.length, item.quantity - 1)}>
-                                        <RemoveIcon fontSize="small" />
+                        return (
+                            <ListItem
+                                key={`${item.width}-${item.height}-${item.lengthMm}`}
+                                sx={{ borderBottom: '1px solid', borderColor: 'divider', py: 2, flexDirection: 'column', alignItems: 'flex-start' }}
+                            >
+                                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                                    <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                                        {item.width}×{item.height}mm – {item.lengthLabel}
+                                    </Typography>
+                                    <IconButton size="small" color="error" onClick={() => removeItem(item.width, item.height, item.lengthMm)}>
+                                        <DeleteOutlineIcon fontSize="small" />
                                     </IconButton>
-                                    <Typography sx={{ px: 2, minWidth: 40, textAlign: 'center' }}>{item.quantity}</Typography>
-                                    <IconButton size="small" onClick={() => updateQuantity(item.width, item.height, item.length, item.quantity + 1)}>
-                                        <AddIcon fontSize="small" />
-                                    </IconButton>
+                                </Box>
+
+                                <Stack direction="row" spacing={2} alignItems="center" sx={{ width: '100%', mb: 1 }}>
+                                    <Stack direction="row" alignItems="center" sx={{ border: '1px solid #ccc', borderRadius: 1 }}>
+                                        <IconButton size="small" onClick={() => updateQuantity(item.width, item.height, item.lengthMm, item.quantity - 1)}>
+                                            <RemoveIcon fontSize="small" />
+                                        </IconButton>
+                                        <Typography sx={{ px: 2, minWidth: 40, textAlign: 'center' }}>{item.quantity}</Typography>
+                                        <IconButton size="small" onClick={() => updateQuantity(item.width, item.height, item.lengthMm, item.quantity + 1)}>
+                                            <AddIcon fontSize="small" />
+                                        </IconButton>
+                                    </Stack>
                                 </Stack>
-                                <Box sx={{ flexGrow: 1 }} />
-                                <Typography variant="subtitle2">
-                                    {(item.piecePrice * item.quantity).toFixed(2)}€
-                                </Typography>
-                            </Stack>
-                        </ListItem>
-                    ))
+
+                                {/* Price breakdown */}
+                                <Box sx={{ width: '100%', fontSize: '0.85rem', ml: 1 }}>
+                                    <Typography variant="caption" color="text.secondary">
+                                        Ilma KM-ta: €{itemTotalNet.toFixed(2)}
+                                    </Typography>
+                                    <br />
+                                    <Typography variant="caption" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+                                        KM-ga: €{itemTotalGross.toFixed(2)}
+                                    </Typography>
+                                </Box>
+                            </ListItem>
+                        );
+                    })
                 )}
             </List>
 
             <Box sx={{ p: 3, bgcolor: 'background.default', borderTop: '1px solid', borderColor: 'divider' }}>
-                <Stack direction="row" justifyContent="space-between" mb={2}>
-                    <Typography variant="h6">Kokku:</Typography>
-                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{totalPrice.toFixed(2)}€</Typography>
+                <Stack spacing={1} mb={2}>
+                    <Stack direction="row" justifyContent="space-between">
+                        <Typography variant="body2">Kokku (ilma KM-ta):</Typography>
+                        <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                            €{totalNetPrice.toFixed(2)}
+                        </Typography>
+                    </Stack>
+                    <Stack direction="row" justifyContent="space-between">
+                        <Typography variant="body2">KM (24%):</Typography>
+                        <Typography variant="body2" sx={{ color: 'warning.main' }}>
+                            +€{totalVatAmount.toFixed(2)}
+                        </Typography>
+                    </Stack>
+                    <Divider />
+                    <Stack direction="row" justifyContent="space-between">
+                        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>KOKKU:</Typography>
+                        <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+                            €{totalGrossPrice.toFixed(2)}
+                        </Typography>
+                    </Stack>
                 </Stack>
                 <Button
                     fullWidth

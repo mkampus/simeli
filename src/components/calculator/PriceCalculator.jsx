@@ -69,9 +69,30 @@ const PriceCalculator = () => {
 
     const handleAdd = () => {
         if (calculation) {
-            addToQuote(calculation, quantity);
+            // Ensure we pass all needed data to QuoteContext
+            const quoteItem = {
+                lengthMm: selectedLength,
+                lengthLabel: calculation.lengthLabel,
+                width: parseInt(calculation.width),
+                height: parseInt(calculation.height),
+                // Prices PER PIECE
+                priceWithoutVat: parseFloat(calculation.priceWithoutVat),
+                priceWithVat: parseFloat(calculation.priceWithVat),
+                // Totals for this line item
+                totalNet: parseFloat(calculation.totalNet),
+                totalGross: parseFloat(calculation.totalGross),
+                vatAmount: parseFloat(calculation.vatAmount),
+                // For display
+                lengthMm: selectedLength,
+            };
+
+            addToQuote(quoteItem, quantity);
             setShowSuccess(true);
         }
+    };
+
+    const formatPrice = (price) => {
+        return parseFloat(price).toFixed(2).replace('.', ',');
     };
 
     return (
@@ -176,26 +197,55 @@ const PriceCalculator = () => {
                                                     </TableRow>
                                                 </TableHead>
                                                 <TableBody>
+                                                    {/* Row 1: Unit price WITHOUT VAT */}
                                                     <TableRow>
                                                         <TableCell>
                                                             {calculation.lengthLabel}, {width}×{height}mm
                                                         </TableCell>
                                                         <TableCell align="right">
-                                                            {calculation.piecePrice.toFixed(2)}€
+                                                            €{formatPrice(calculation.priceWithoutVat)}
                                                         </TableCell>
                                                         <TableCell align="right">
-                                                            {calculation.totalGross}€
+                                                            €{formatPrice(calculation.totalNet)}
                                                         </TableCell>
                                                     </TableRow>
-                                                    <TableRow>
+
+                                                    {/* Row 2: SUBTOTAL WITHOUT VAT - HIGHLIGHTED */}
+                                                    <TableRow sx={{ bgcolor: '#f5f5f5', fontWeight: 'bold' }}>
                                                         <TableCell colSpan={2} sx={{ fontWeight: 'bold' }}>
-                                                            Kokku (sh KM 24%)
+                                                            Kokku (ilma KM-ta)
                                                         </TableCell>
                                                         <TableCell
                                                             align="right"
-                                                            sx={{ fontWeight: 'bold', color: 'primary.main', fontSize: '1.1rem' }}
+                                                            sx={{ fontWeight: 'bold', fontSize: '1rem' }}
                                                         >
-                                                            {calculation.totalGross}€
+                                                            €{formatPrice(calculation.totalNet)}
+                                                        </TableCell>
+                                                    </TableRow>
+
+                                                    {/* Row 3: VAT Amount */}
+                                                    <TableRow>
+                                                        <TableCell colSpan={2} sx={{ fontSize: '0.9rem' }}>
+                                                            KM (24%)
+                                                        </TableCell>
+                                                        <TableCell
+                                                            align="right"
+                                                            sx={{ fontSize: '0.9rem', color: 'text.secondary' }}
+                                                        >
+                                                            +€{formatPrice(calculation.vatAmount)}
+                                                        </TableCell>
+                                                    </TableRow>
+
+                                                    {/* Row 4: TOTAL WITH VAT - MAIN TOTAL */}
+                                                    <TableRow sx={{ bgcolor: 'primary.light', color: 'primary.contrastText' }}>
+                                                        <TableCell colSpan={2} sx={{ fontWeight: 'bold', color: 'inherit' }}>
+                                                            KOKKU (KM-ga)
+                                                        </TableCell>
+                                                        <TableCell
+                                                            align="right"
+                                                            sx={{ fontWeight: 'bold', color: 'inherit', fontSize: '1.2rem' }}
+                                                        >
+                                                            €{formatPrice(calculation.totalGross)}
                                                         </TableCell>
                                                     </TableRow>
                                                 </TableBody>
@@ -203,7 +253,7 @@ const PriceCalculator = () => {
                                         </TableContainer>
 
                                         <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-                                            Hind meetri kohta: {calculation.pricePerM}€/m | KM osa: {calculation.vatAmount}€
+                                            Hind meetri kohta (KM-ga): €{calculation.pricePerM}/m
                                         </Typography>
 
                                         <Button
