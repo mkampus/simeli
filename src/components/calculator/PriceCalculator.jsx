@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import {
     Box, Grid, Paper, Typography, TextField,
     MenuItem, FormControl, InputLabel, Select,
-    Button, Stack, Alert, Tabs, Tab,
+    Button, Alert, Tabs, Tab,
     Table, TableBody, TableCell, TableContainer,
     TableHead, TableRow
 } from '@mui/material';
@@ -31,13 +31,19 @@ const PriceCalculator = () => {
     const [calculation, setCalculation] = useState(null);
     const [showSuccess, setShowSuccess] = useState(false);
 
+    // RESET KÕIK KUI PIKKUS MUUTUB
     useEffect(() => {
         if (selectedLength) {
             const widths = getAvailableWidths(selectedLength);
             setAvailableWidths(widths);
             setWidth('');
             setHeight('');
+            setQuantity(1);
             setCalculation(null);
+            setShowSuccess(false);
+        } else {
+            setAvailableWidths([]);
+            setAvailableHeights([]);
         }
     }, [selectedLength]);
 
@@ -65,6 +71,9 @@ const PriceCalculator = () => {
                     pricePerMWithVat: (product.priceWithVat / (selectedLength / 1000)).toFixed(2)
                 });
             }
+        } else {
+            // RESET CALCULATION KUI KASTID ON TÜHJAD
+            setCalculation(null);
         }
     }, [selectedLength, width, height, quantity]);
 
@@ -126,11 +135,9 @@ const PriceCalculator = () => {
                                     color="primary"
                                     onClick={() => {
                                         setShowSuccess(false);
-                                        setAvailableWidths(getAvailableWidths(selectedLength));
                                         setWidth('');
                                         setHeight('');
                                         setQuantity(1);
-                                        setAvailableHeights([]);
                                         setCalculation(null);
                                     }}
                                 >
@@ -172,7 +179,7 @@ const PriceCalculator = () => {
                                         </FormControl>
                                     </Grid>
 
-                                    {/* KOGUS */}
+                                    {/* KOGUS - LIHTNE TEKSTIVÄLI */}
                                     <Grid item xs={12} sm={4}>
                                         <TextField
                                             fullWidth
