@@ -6,7 +6,6 @@ import Hero from '../components/home/Hero';
 import { Box, Typography, Container, Grid, Paper, List, ListItem, ListItemIcon, ListItemText, Link, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
 import FeatureSection from '../components/home/FeatureSection';
 import BusinessIcon from '@mui/icons-material/Business';
 import HistoryIcon from '@mui/icons-material/History';
@@ -14,32 +13,20 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import Button from '../components/common/Button';
 
 const Home = () => {
+    // Muudetud array: nüüd toetab objekte, et saaksime teatud ridu esile tõsta
     const servicesList = [
-        "Pakume ka teenustöid ja teeme sinu palgist valmismaterjali!",
-        "Ostame palke",
-        "Materjali hööveldamine (ühelt või mitmelt küljelt)",
-        "Pikkupidi järkamine täpsusmõõtu (sh 22mm ja 25mm paksused)",
-        "Erinevate puiduliikide töötlemine (mänd, kuusk jne)",
-        "Transporditeenus kokkuleppel",
-        "Konsultatsioon materjali valikul",
-    ];
-
-    const testimonialsList = [
         {
-            quote: "Tellisin Simeli Saeveskilt materjali korterirenoveerimiseks. Hinnad olid selged, tarne kiire ja kvaliteet hea.",
-            author: "OÜ Ehitus, Rapla",
-            company: true
+            text: "🔥 ERIPAKKUMINE: 6,5 m pikkuste palkide saagimine vastavalt soovile!",
+            highlight: true,
+            link: "/kontakt?subject=erimoot#quote-form-section" // Lisasime lingi!
         },
-        {
-            quote: "Paindlik teenus ja personaalne lähenemisviis. Tema käitumine on kiire ja asjatundlik.",
-            author: "OÜ Kodutööd, Märjamaa",
-            company: true
-        },
-        {
-            quote: "Kasutasime Simeli materjali taiga ehitamiseks. Täpne mõõdistamine ja suurepärane tulemus.",
-            author: "OÜ Puukodu, Tallinn",
-            company: true
-        },
+        { text: "Pakume ka teenustöid ja teeme sinu palgist valmismaterjali!" },
+        { text: "Ostame palke" },
+        { text: "Materjali hööveldamine (ühelt või mitmelt küljelt)" },
+        { text: "Pikkupidi järkamine täpsusmõõtu (sh 22mm ja 25mm paksused)" },
+        { text: "Erinevate puiduliikide töötlemine (mänd, kuusk jne)" },
+        { text: "Transporditeenus kokkuleppel" },
+        { text: "Konsultatsioon materjali valikul" },
     ];
 
     const faqList = [
@@ -70,7 +57,7 @@ const Home = () => {
                         <Grid item xs={12} md={5}>
                             <Box
                                 component="img"
-                                src="/images/siim-profile.jpg"
+                                src="/images/siim-profile.png"
                                 alt="Siim Soosaar, Simeli Saeveski omanik"
                                 sx={{
                                     width: '100%',
@@ -183,14 +170,51 @@ const Home = () => {
                         <Grid item xs={12} md={8}>
                             <Paper elevation={2} sx={{ p: 3 }}>
                                 <List>
-                                    {servicesList.map((service, index) => (
-                                        <ListItem key={index} disableGutters>
-                                            <ListItemIcon sx={{ minWidth: 40, color: 'primary.main' }}>
-                                                <CheckCircleOutlineIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary={service} />
-                                        </ListItem>
-                                    ))}
+                                    {/* Uuendatud klikitav map funktsioon */}
+                                    {servicesList.map((service, index) => {
+                                        // Määrame dünaamilised propsid, kui tegu on lingiga
+                                        const linkProps = service.link ? {
+                                            component: RouterLink,
+                                            to: service.link
+                                        } : {};
+
+                                        return (
+                                            <ListItem
+                                                key={index}
+                                                disableGutters
+                                                {...linkProps} // Lisab component ja to propsid, kui link eksisteerib
+                                                sx={{
+                                                    bgcolor: service.highlight ? '#fff4e5' : 'transparent',
+                                                    border: service.highlight ? '1px solid' : 'none',
+                                                    borderColor: service.highlight ? '#ffa726' : 'transparent',
+                                                    borderRadius: 1,
+                                                    px: service.highlight ? 2 : 0,
+                                                    py: service.highlight ? 1 : 0.5,
+                                                    mb: service.highlight ? 1.5 : 0,
+                                                    textDecoration: 'none', // Eemaldab lingi allajoonimise
+                                                    color: 'inherit',
+                                                    transition: 'all 0.2s ease',
+                                                    // Kui on highlight, näitame, et see on klikitav
+                                                    cursor: service.highlight ? 'pointer' : 'default',
+                                                    '&:hover': service.highlight ? {
+                                                        bgcolor: '#ffe0b2', // Teeb hiirega peale minnes veidi tumedamaks
+                                                        borderColor: '#fb8c00'
+                                                    } : {}
+                                                }}
+                                            >
+                                                <ListItemIcon sx={{ minWidth: 40, color: service.highlight ? '#e65100' : 'primary.main' }}>
+                                                    <CheckCircleOutlineIcon />
+                                                </ListItemIcon>
+                                                <ListItemText
+                                                    primary={service.text || service}
+                                                    primaryTypographyProps={{
+                                                        fontWeight: service.highlight ? 'bold' : 'normal',
+                                                        color: service.highlight ? '#d84315' : 'text.primary'
+                                                    }}
+                                                />
+                                            </ListItem>
+                                        );
+                                    })}
                                 </List>
                                 <Typography variant="body2" sx={{ mt: 2, fontStyle: 'italic' }}>
                                     Ei leidnud sobivat teenust? <Link component={RouterLink} to="/kontakt">Võta meiega ühendust</Link> ja leiame lahenduse!
@@ -202,36 +226,6 @@ const Home = () => {
             </Box>
 
             <FeatureSection />
-
-            {/*<Box id="tagasiside" sx={{ py: 6, backgroundColor: 'background.paper' }}>*/}
-            {/*    <Container maxWidth="lg">*/}
-            {/*        <Typography variant="h2" component="h2" align="center" gutterBottom sx={{ mb: 4 }}>*/}
-            {/*            Klientide Tagasiside*/}
-            {/*        </Typography>*/}
-            {/*        <Grid container spacing={3} justifyContent="center">*/}
-            {/*            {testimonialsList.map((testimonial, index) => (*/}
-            {/*                <Grid item xs={12} sm={6} md={4} key={index}>*/}
-            {/*                    <Paper elevation={1} sx={{ p: 3, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>*/}
-            {/*                        <Box sx={{ display: 'flex', alignItems: 'flex-start', mb: 1 }}>*/}
-            {/*                            <FormatQuoteIcon sx={{ color: 'primary.main', mr: 1, transform: 'scaleX(-1)' }} />*/}
-            {/*                            <Typography variant="body1" sx={{ fontStyle: 'italic' }}>{testimonial.quote}</Typography>*/}
-            {/*                        </Box>*/}
-            {/*                        <Box>*/}
-            {/*                            <Typography variant="caption" color="text.secondary" sx={{ mt: 2, display: 'block' }}>*/}
-            {/*                                — <strong>{testimonial.author}</strong>*/}
-            {/*                            </Typography>*/}
-            {/*                            {testimonial.company && (*/}
-            {/*                                <Typography variant="caption" color="primary" sx={{ display: 'block', mt: 0.5 }}>*/}
-            {/*                                    ✓ Kontrollitud klient*/}
-            {/*                                </Typography>*/}
-            {/*                            )}*/}
-            {/*                        </Box>*/}
-            {/*                    </Paper>*/}
-            {/*                </Grid>*/}
-            {/*            ))}*/}
-            {/*        </Grid>*/}
-            {/*    </Container>*/}
-            {/*</Box>*/}
 
             <Box id="kkk" sx={{ py: 6, backgroundColor: 'background.default' }}>
                 <Container maxWidth="md">
@@ -270,20 +264,6 @@ const Home = () => {
                     </Button>
                 </Container>
             </Box>
-
-            {/*<Box sx={{ py: 6, backgroundColor: 'background.paper' }}>*/}
-            {/*    <Container maxWidth="lg">*/}
-            {/*        <Typography variant="h2" component="h2" align="center" gutterBottom>*/}
-            {/*            Tehtud Tööde Näited*/}
-            {/*        </Typography>*/}
-            {/*        <Typography variant="h6" component="p" align="center" color="text.secondary" sx={{ mb: 4, maxWidth: '700px', mx: 'auto' }}>*/}
-            {/*            Oleme aidanud paljusid kliente nende ehitus- ja renoveerimisprojektides.*/}
-            {/*        </Typography>*/}
-            {/*        <Box sx={{ minHeight: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px dashed grey', mt: 4, borderRadius: 1 }}>*/}
-            {/*            <Typography color="textSecondary">(Pildigalerii tehtud töödest - nt. terrassilauad, voodrilauad, ehituskonstruktsioonid)</Typography>*/}
-            {/*        </Box>*/}
-            {/*    </Container>*/}
-            {/*</Box>*/}
         </>
     );
 };

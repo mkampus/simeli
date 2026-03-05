@@ -1,7 +1,7 @@
 // src/pages/Contact.jsx
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Container, Typography, Box, Grid, Paper, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import { Container, Typography, Box, Grid, Paper, Accordion, AccordionSummary, AccordionDetails, Alert, AlertTitle } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CalculateIcon from '@mui/icons-material/Calculate';
@@ -13,7 +13,10 @@ const Contact = () => {
     const [calculatorOpen, setCalculatorOpen] = useState(false);
     const [searchParams] = useSearchParams();
 
-    React.useEffect(() => {
+    // Loeme URL-ist parameetrit (kas klient tuli Hero eripakkumise nupust)
+    const isSpecialOffer = searchParams.get('subject') === 'erimoot';
+
+    useEffect(() => {
         if (searchParams.get('calculator') === 'open') {
             setCalculatorOpen(true);
         }
@@ -100,6 +103,15 @@ const Contact = () => {
                                 <Typography variant="h4" component="h2" gutterBottom sx={{ mb: 3 }}>
                                     Tee hinnapäring
                                 </Typography>
+
+                                {/* DÜNAAMILINE TEAVITUS ERIPAKKUMISE KOHTA */}
+                                {isSpecialOffer && (
+                                    <Alert severity="warning" sx={{ mb: 3, border: '1px solid', borderColor: 'warning.main' }}>
+                                        <AlertTitle sx={{ fontWeight: 'bold' }}>Eripakkumise päring (6,5 m palgid)</AlertTitle>
+                                        Palun lisa allolevasse <strong>Lisainfo</strong> lahtrisse, millises mõõdus materjali (prussid, talad, lauad jne) sa soovid, et me neist palkidest saeksime!
+                                    </Alert>
+                                )}
+
                                 <Paper elevation={3} sx={{ p: { xs: 2, sm: 4 } }}>
                                     <QuoteForm />
                                 </Paper>
