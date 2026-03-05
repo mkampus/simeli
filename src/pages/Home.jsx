@@ -41,9 +41,24 @@ const Home = () => {
     return (
         <>
             <Helmet>
+                {/* Standard SEO */}
                 <title>Saematerjal Märjamaal & Kesk-Eestis | Terrassilauad, Voodrilauad | Simeli Saeveski</title>
                 <meta name="description" content="Kohalik saeveski Märjamaal. Terrassilauad, voodrilauad, sauna lavalauad. Kiire teenindus ja paindlikud kogused." />
                 <meta name="keywords" content="saematerjal, terrassilaud, voodrilaud, sauna lavalaud, Märjamaa, saeveski" />
+
+                {/* Open Graph (Facebook, WhatsApp, iMessage, LinkedIn) */}
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content="https://simelisaeveski.ee/" /> {/* Pane siia oma päris domeen! */}
+                <meta property="og:title" content="Simeli Saeveski | Saematerjal Märjamaal" />
+                <meta property="og:description" content="Kohalik saeveski Märjamaal. Terrassilauad, voodrilauad ja erimõõduline saematerjal. Kiire teenindus otse tootjalt!" />
+                <meta property="og:image" content="https://simelisaeveski.ee/images/og-image.png" /> {/* MUST be an absolute URL */}
+
+                {/* Twitter / X (Uses the same image but requires its own tags) */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:url" content="https://simelisaeveski.ee/" />
+                <meta name="twitter:title" content="Simeli Saeveski | Saematerjal Märjamaal" />
+                <meta name="twitter:description" content="Kohalik saeveski Märjamaal. Terrassilauad, voodrilauad ja erimõõduline saematerjal." />
+                <meta name="twitter:image" content="https://simelisaeveski.ee/images/og-image.png" />
             </Helmet>
 
             <Hero />
