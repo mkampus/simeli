@@ -288,7 +288,7 @@ const PriceCalculator = () => {
                     <Grid item xs={12}>
                         <Alert severity="info">
                             <Typography variant="body2">
-                                Hinnad on orienteeruvad. Suuremate koguste puhul küsi eripakkumist!
+                                Hinnad on orienteeruvad. Suuremate koguste puhul küsi personaalset hinnapakkumist.
                             </Typography>
                         </Alert>
                     </Grid>

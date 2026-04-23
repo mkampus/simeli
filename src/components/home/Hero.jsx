@@ -1,9 +1,7 @@
 // src/components/home/Hero.jsx
 import React from 'react';
 import Button from '../common/Button';
-import { Container, Typography, Box, Chip } from '@mui/material';
-import LocalOfferIcon from '@mui/icons-material/LocalOffer';
-import { Link as RouterLink } from 'react-router-dom';
+import { Container, Typography, Box } from '@mui/material';
 
 const Hero = () => {
     return (
@@ -22,32 +20,6 @@ const Hero = () => {
             }}
         >
             <Container maxWidth="md">
-
-                {/* ERIPAKKUMISE MÄRGIS */}
-                <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4 }}>
-                    <Chip
-                        icon={<LocalOfferIcon style={{ color: '#fff' }} fontSize="small" />}
-                        label="Eripakkumine: 6,5 m palgid erimõõdus saematerjaliks!"
-                        component={RouterLink}
-                        to="/kontakt?subject=erimoot#quote-form-section"
-                        clickable
-                        sx={{
-                            backgroundColor: 'warning.main',
-                            color: 'warning.contrastText',
-                            fontWeight: 'bold',
-                            fontSize: { xs: '0.85rem', sm: '1rem' },
-                            py: 2.5,
-                            px: 1,
-                            boxShadow: '0 4px 14px 0 rgba(237, 108, 2, 0.39)',
-                            transition: 'all 0.2s ease-in-out',
-                            '&:hover': {
-                                backgroundColor: 'warning.dark',
-                                transform: 'translateY(-2px)'
-                            }
-                        }}
-                    />
-                </Box>
-
                 <Typography
                     variant="h1"
                     component="h1"

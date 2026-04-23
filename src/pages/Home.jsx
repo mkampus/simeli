@@ -13,13 +13,7 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import Button from '../components/common/Button';
 
 const Home = () => {
-    // Muudetud array: nüüd toetab objekte, et saaksime teatud ridu esile tõsta
     const servicesList = [
-        {
-            text: "🔥 ERIPAKKUMINE: 6,5 m pikkuste palkide saagimine vastavalt soovile!",
-            highlight: true,
-            link: "/kontakt?subject=erimoot#quote-form-section" // Lisasime lingi!
-        },
         { text: "Pakume ka teenustöid ja teeme sinu palgist valmismaterjali!" },
         { text: "Ostame palke" },
         { text: "Materjali hööveldamine (ühelt või mitmelt küljelt)" },
